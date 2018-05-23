@@ -11,6 +11,7 @@
 //
 :page-layout: guide
 // INSTRUCTION: The project id is the part of the git repository after the guide- and must be specified
+// :projectid: github repo name without the guide- prefix
 :projectid: outline
 // INSTRUCTION: Provide an estimate of how long the guide will take to go through.
 :page-duration: 15 minutes
@@ -19,9 +20,9 @@
 // INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, CDI, and Open Liberty.
 // INSTUCTION: Please provide relevant tags, try to avoid inventing new ones, tags where there is 1 guide for the tag isn't useful.
-:page-tags: ['REST', 'Todo']
+:page-tags: ['REST', 'Getting Started', 'CDI', 'JAX-RS']
 // INSTRUCTION: Specify the unique name of the guide that is used in the permalink.  For example below, it is rest-service
-:page-related-guides: ['outline']
+:page-related-guides: ['cdi-intro', 'rest-intro']
 // INSTRUCTION: Specify the slug in the website. This must be unique.
 :page-permalink: /guides/outline
 // INSTRUCTION: You should have this to source the common page elements, clone git@github.com:OpenLiberty/guides-common.git
@@ -30,6 +31,7 @@
 // The details of what to fill in for this template are in the comments. So, read the source for this template to see the comments.
 //
 // Example title: Creating a RESTful web service
+// Title of guide, starting with a gerund (Creating, Administering, and so on)
 = Creating a REST API for a todo list application
 
 // Start the introduction with "You'll explore how to..." or something similarly catchy:
@@ -68,6 +70,8 @@ include::{common-includes}/trywhatyoubuild-intro.adoc[]
 // Describe what user expects to see after running the complete version of the application.
 
 include::{common-includes}/trywhatyoubuild-end.adoc[]
+
+//Write a sentence with the context like "Navigate to the `start` directory to begin." in the section where user starts working with the implementation.
 
 //Write a sentence with the context like "Now, navigate to the `start` directory to begin." in the section where user starts working with the implementation.
 
