@@ -24,7 +24,7 @@
 // INSTRUCTION: Specify the unique name of the guide that is used in the permalink.  For example below, it is rest-service
 :page-related-guides: ['cdi-intro', 'rest-intro']
 // INSTRUCTION: Specify the slug in the website. This must be unique.
-:page-permalink: /guides/outline
+:page-permalink: /guides/{projectid}
 // INSTRUCTION: You should have this to source the common page elements, clone git@github.com:OpenLiberty/guides-common.git
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 // INSTRUCTION: You can't have a new line between the attributes and the title.
