@@ -13,7 +13,7 @@ public class TodoTest {
     @Test
     public void testGetTodos() throws Exception {
         HttpClient client = HttpClients.createDefault();
-        HttpGet request = new HttpGet("http://localhost:9080/todo-app/todos");
+        HttpGet request = new HttpGet("http://localhost:9080/todo-app/todo");
         HttpResponse response = client.execute(request);
 
         assertEquals(response.getStatusLine().getStatusCode(), 200);

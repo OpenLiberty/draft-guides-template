@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import io.openliberty.guides.todolistSample.models.*;
 import io.openliberty.guides.todolistSample.services.*;
 
-@Path("todos")
+@Path("todo")
 public class TodoResource {
     @Inject
     private TodoService service;
