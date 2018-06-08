@@ -1,4 +1,4 @@
-package io.openliberty.guides.todolistSample.services.samples;
+package io.openliberty.guides.todolistSample.managers.samples;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,15 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 
 import io.openliberty.guides.todolistSample.models.*;
-import io.openliberty.guides.todolistSample.services.*;
+import io.openliberty.guides.todolistSample.managers.*;
 
 @Alternative
 @ApplicationScoped
-public class SampleTodoService implements TodoService {
+public class SampleTodoManager implements TodoManager {
     private List<TodoModel> todos;
     private static int id = 0;
 
-    public SampleTodoService() {
+    public SampleTodoManager() {
         this.todos = new ArrayList<TodoModel>();
         createTodo(new TodoModel("My first task", false));
         createTodo(new TodoModel("My second task", true));
