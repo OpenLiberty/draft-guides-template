@@ -1,4 +1,4 @@
-package it.io.openliberty.guides.todo;
+package it.io.openliberty.guides.todolistSample;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package io.openliberty.guides.todo.services.samples;
+package io.openliberty.guides.todolistSample.services.samples;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 
-import io.openliberty.guides.todo.models.TodoModel;
-import io.openliberty.guides.todo.services.TodoService;
+import io.openliberty.guides.todolistSample.models.*;
+import io.openliberty.guides.todolistSample.services.*;
 
 @Alternative
 @ApplicationScoped

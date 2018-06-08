@@ -1,6 +1,6 @@
-package io.openliberty.guides.todo.services;
+package io.openliberty.guides.todolistSample.services;
 
-import io.openliberty.guides.todo.models.*;
+import io.openliberty.guides.todolistSample.models.*;
 import java.util.List;
 import java.util.Optional;
 
