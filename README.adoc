@@ -34,10 +34,15 @@ NOTE: This repository contains the guide documentation source. To view the guide
 // Do not start the introduction with "This guide...".
 // EXAMPLE: Learn how to create a todo list API as a REST service using JAX-RS, CDI, and Open Liberty.
 
-
-
-
 == What you'll learn
+
+//-----------------------------------------------------
+This guide is a sample guide to help you get started with writing your own. 
+Before you get started you will want to follow these steps: https://github.com/OpenLiberty/draft-guides-template/wiki/Instructions-to-start-writing-a-guide[Instructions to start writing your own guide]
+
+//-----------------------------------------------------
+
+
 
 // Write about what the user will learn in a meaningful intro paragraph.
 // Follow the intro paragraph with more details of what the user will learn, but still keep it brief.
