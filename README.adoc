@@ -1,60 +1,3 @@
-= Contributing a guide
-:template-url: https://github.com/OpenLiberty/guides-template
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
-
-Welcome to Open Liberty! In order to contribute a guide for Open Liberty, follow the steps in this README.
-
-### Step 1: Set up your computer.
-
-- Install https://help.github.com/articles/set-up-git/[Git] and become familiar with the https://blog.github.com/2015-07-29-git-2-5-including-multiple-worktrees-and-triangular-workflows/#improved-support-for-triangular-workflows[Git triangular workflow].
-- Install and know the basics of https://maven.apache.org/index.html[Maven] or https://gradle.org[Gradle].
-- Install a text editor with the https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc] compiler plugin and learn the syntax of AsciiDoc.
-
-### Step 2 (Optional): Try some existing guides.
-
-Use the guides on https://openliberty.io/guides/[openliberty.io] as examples. 
-
-If you're not sure where to start, try the https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service] guide followed by the  https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices] guide.
-
-### Step 3: Know the structure and style.
-
-- Know your audience!
-* If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
-
-- Know the guide structure and the writing styles!
-* Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
-
-
-### Step 4: Create a new guide.
-
-1. Clone the {template-url}[`guides-template`] to your own workspace.
-
-2. Develop your guide in your own workspace.
-
-** Develop code and write tests that are based on the project structure in the {template-url}[`guides-template`]. To start, create your project in the `finish` directory. Make a simple application that demonstrates how to use your topic.
-
-** Copy the code from the `finish` directory to the `start` directory. Then, from the copy in the `start` directory, remove the code that you want the user to focus on.
-
-** Write a guide that follows the `README.adoc` template (APPENDIX A) in the {template-url}[`guides-template`] repository. Introduce and explain the parts of code that you removed during the last step and tell the users where to copy and paste the code. Walk through how to build the `finish` directory, run the tests, and perform any other steps that users need to run your project on their own. Make sure to follow https://github.com/OpenLiberty/draft-guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidesline for Structure and Styles].
-
-3. Before proceeding further, you should review the https://github.com/OpenLiberty/guides-template/wiki/Self-Review-Checklist[checklist].
-
-4. Open a new issue in the https://github.com/OpenLiberty/guides-common/issues[guides-commons] repository. Describe the topic you wrote, add a link to the repository that contains the complete draft of your guide, and the Open Liberty team will be notified.
-
-5. You must sign the https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-individual.pdf[Individual Contributor License Agreement] (CLA) in order to contribute. If you are writing the guide as part of your job, you might also want your employer to sign a https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-corporate.pdf[Corporate Contributor License Agreement] (CCLA). Instructions for how to sign and submit these agreements are provided in each document. You should send your signed CLA document (in PDF) to the email address cla@openliberty.io before you move on to the next step.
-
-6. After the Open Liberty team approves your guide and obtains your signed CLA, they will create a draft guide repository in the Open Liberty Project on GitHub for you. Your new repository will be named as `draft-guide-{projectid}`. Then, you can open a pull request that contains your commits for the guide, and the team will be notified for review.
-
-### Step 5: The Open Liberty team will review your guide.
-
-- You can see your feedback from the `Issues` section in your `draft-guide-{projectid}` repository when it's ready.
-- Follow up with the team's review discussions.
-
-
-## APPENDIX A: A template README.adoc
-Please remove all the instructions before `APPENDIX A` prior to commit. Most comments should be removed, although not the copyright.
-
-```
 // INSTRUCTION: The copyright statement must appear at the top of the file
 //
 // Copyright (c) 2018 IBM Corporation and others.
@@ -80,17 +23,17 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 // INSTRUCTION: Please provide relevant tags.
 // Requirement: Must be one of the following tags: [MicroProfile, Maven, Docker, Kubernetes, Gradle, Java EE]
 :page-tags: ['MicroProfile', 'Maven', 'Java EE', 'Gradle']
-// INSTRUCTION: Specify the unique name of the guide that is used in the permalink.  
+// INSTRUCTION: Specify the unique name of the guide that is used in the permalink.
 :page-related-guides: ['cdi-intro', 'rest-intro']
-// INSTRUCTION: Set 'basic', 'microprofile', 'none' 
+// INSTRUCTION: Set 'basic', 'microprofile', 'none'
 :page-guide-category: microprofile
- // INSTRUCTION: 
+ // INSTRUCTION:
 // Requirement: Must define :page-guide-category:
 // Places the guide into the essentials section of a category
 :page-essential: false
- // INSTRUCTION: 
+ // INSTRUCTION:
 // Requirement: Must have :page-essential: true
-// Number is used to sort guide from left (lowest number) to right (highest number) in 
+// Number is used to sort guide from left (lowest number) to right (highest number) in
 // the essentials section of a category
 :page-essential-order: 3
 // INSTRUCTION: Specify the slug in the website. This must be unique.
@@ -115,7 +58,7 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
 // Start the introduction with "You'll explore how to..." or something similarly catchy.
-// Write no more than two sentences, with meaningful information on what the user can accomplish 
+// Write no more than two sentences, with meaningful information on what the user can accomplish
 // with this guide.
 // Do not start the introduction with "This guide...".
 // EXAMPLE: Learn how to create a todo list API as a REST service using JAX-RS, CDI, and Open Liberty.
@@ -138,7 +81,7 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 == Getting started
 
-// Add this getting started section to your guide if it is applicable. 
+// Add this getting started section to your guide if it is applicable.
 // Use the following include to pull in the git clone instructions from the guides-common repo.
 
 [role="command"]
@@ -150,8 +93,8 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 === Try what you’ll build
 
-// This is a subsection of the "Getting started" section above. It should briefly walk the user 
-// through how to setup everything in the "finish" directory and try out the finished version of 
+// This is a subsection of the "Getting started" section above. It should briefly walk the user
+// through how to setup everything in the "finish" directory and try out the finished version of
 // what they will be building.
 
 [role="command"]
@@ -177,7 +120,7 @@ NOTE: This repository contains the guide documentation source. To view the guide
 // EXAMPLE: * Learning how to build a REST service for a todo list application
 
 
-// Write a sentence with the context like "Navigate to the `start` directory to begin." in the section 
+// Write a sentence with the context like "Navigate to the `start` directory to begin." in the section
 // where user starts working with the implementation.
 
 
@@ -205,11 +148,11 @@ NOTE: This repository contains the guide documentation source. To view the guide
 `src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java`
 ----
 
-TodoModel.java 
-[source, Java, linenums, role='code_column'] 
----- 
-include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[tags=**;!copyright;]
----- 
+TodoModel.java
+[source, Java, linenums, role='code_column']
+----
+link:finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[]
+----
 
 
 * Getters, setters, and default constructor such that the model can be serialized/deserialized easily
@@ -225,11 +168,11 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoMo
 `src/main/java/io/openliberty/guides/todolistSample/managers/TodoManager.java`
 ----
 
-TodoManager.java 
-[source, Java, linenums, role='code_column'] 
----- 
-include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/TodoManagers.java[tags=**;!copyright;]
----- 
+TodoManager.java
+[source, Java, linenums, role='code_column']
+----
+link:finish/src/main/java/io/openliberty/guides/todolistSample/managers/TodoManagers.java[]
+----
 
 [role="code_command", subs="quotes"]
 ----
@@ -237,11 +180,11 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/Todo
 `src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java`
 ----
 
-SampleTodoManager.java 
-[source, Java, linenums, role='code_column'] 
----- 
-include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;!copyright;]
----- 
+SampleTodoManager.java
+[source, Java, linenums, role='code_column']
+----
+link:finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[]
+----
 
 * Implemented basic CRUD (Create, Read, Update, and Delete) operations.
 * Manager is ApplicationScoped, which essentially means that it is a singleton.
@@ -257,11 +200,11 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samp
 `src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java`
 ----
 
-TodoResource.java 
-[source, Java, linenums, role='code_column'] 
----- 
-include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[tags=**;!copyright;]
----- 
+TodoResource.java
+[source, Java, linenums, role='code_column']
+----
+link:finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[]
+----
 
 * The resource methods are accessible via HTTP
 * Use GET, POST, PUT, and DELETE verbs to handle reading, creating, updating, and deleting resources
@@ -279,7 +222,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 // Sample usage of the application
 // Suggestions for what changes the reader can make to explore the code
 
-// Use the following include to pull in the Maven rebuild instructions from the 
+// Use the following include to pull in the Maven rebuild instructions from the
 // guides-common repo.
  include::{common-includes}/mvncompile.adoc[]
 
@@ -290,7 +233,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 // Show how to test your application.
 
 
-// EXAMPLE: 
+// EXAMPLE:
 ======================================================================================================
 [role="code_command", subs="quotes"]
 ----
@@ -298,10 +241,10 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 `finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java`
 ----
 
-TodoTest.java 
-[source, Java, linenums, role='code_column'] 
----- 
-include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[tags=**;!copyright;]
+TodoTest.java
+[source, Java, linenums, role='code_column']
+----
+link:finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
 ----
 
 * Explain what each test case is testing
@@ -315,8 +258,8 @@ include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.j
 // Including a listing block with test results here
 // Show console output of the test results
 
-// OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that 
-// will cause the tests to fail. Be brief and don't give the users all of the instructions. 
+// OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that
+// will cause the tests to fail. Be brief and don't give the users all of the instructions.
 // At this point, they should be comfortable enough to figure it out on their own.
 
 
@@ -325,15 +268,14 @@ include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.j
 
 // Briefly summarize what the user achieved in this guide (1-2 sentences).
 
-// OPTIONAL: briefly state what the user could do next now that they've learned the 
+// OPTIONAL: briefly state what the user could do next now that they've learned the
 // technologies in this guide.
 
 // Include the following from the guides-common repo to tell users how they can contribute to the guide:
  include::{common-includes}/finish.adoc[]
- 
+
  //Include the following guides-attribution from the guides-common repo:
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[subs="attributes"]
+link:https://raw.githubusercontent.com/OpenLiberty/guides-common/multipane/attribution.adoc[]
 
 // DO NO CREATE ANYMORE SECTIONS AT THIS POINT
 // Related guides will be added in automatically here if you included them in ":page-related-guides"
-```
