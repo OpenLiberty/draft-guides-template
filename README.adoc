@@ -7,45 +7,20 @@
 //     IBM Corporation
 //
 :page-layout: guide-multipane
-// INSTRUCTION: The project id is the part of the git repository after the guide- and must be specified
-// :projectid: github repo name without the `guide-` prefix
 :projectid: template
-// INSTRUCTION: Provide an estimate of how long the guide will take to go through.
 :page-duration: 15 minutes
-// INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.
 :page-releasedate: 2018-05-14
-// INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
-// INSTRUCTION: Please provide relevant tags.
-// Requirement: Must be one of the following tags: [MicroProfile, Maven, Docker, Kubernetes, Gradle, Java EE]
 :page-tags: ['MicroProfile', 'Maven', 'Java EE', 'Gradle']
-// INSTRUCTION: Specify the unique name of the guide that is used in the permalink.
 :page-related-guides: ['cdi-intro', 'rest-intro']
-// INSTRUCTION: Set 'basic', 'microprofile', 'none'
 :page-guide-category: microprofile
- // INSTRUCTION:
-// Requirement: Must define :page-guide-category:
-// Places the guide into the essentials section of a category
 :page-essential: false
- // INSTRUCTION:
-// Requirement: Must have :page-essential: true
-// Number is used to sort guide from left (lowest number) to right (highest number) in
-// the essentials section of a category
 :page-essential-order: 3
-// INSTRUCTION: Specify the slug in the website. This must be unique.
 :page-permalink: /guides/{projectid}
-// INSTRUCTION: Source the common page elements, clone git@github.com:OpenLiberty/guides-common.git.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
-// INSTRUCTION: Update the SEO title for the guide
 :page-seo-title: Creating a REST service
-// INSTRUCTION: Update the SEO description for the guide
 :page-seo-description: Find out how to create a REST service on Open Liberty
-// INSTRUCTION: The default of the author value is Open Liberty but if you are a non-IBM contributor you would put your name here.
 :guide-author: Open Liberty
-
-
-
-
 
 = Title of guide, starting with a gerund (Creating, Administering, and so on)
 // EXAMPLE: Creating a REST API for a todo list application
