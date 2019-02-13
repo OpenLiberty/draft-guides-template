@@ -45,9 +45,7 @@ See https://github.com/OpenLiberty/draft-guides-template/wiki/README-breakdown[R
 
 Before you get started you will want to follow these steps: https://github.com/OpenLiberty/draft-guides-template/wiki/Instructions-to-start-writing-a-guide[Instructions to start writing your own guide]
 
-The what you'll learn section is where you will be writing about what the user will learn in a meaningful introduction paragraph. 
-
-Follow the introduction paragraph with more details of what the user will learn, but still keep it brief. See the https://openliberty.io/guides/rest-intro.html[REST guide] at as an exemplar guide.
+The what you'll learn section is where you will be writing about what the user will learn in a meaningful introduction paragraph. Follow the introduction paragraph with more details of what the user will learn, but still keep it brief. See the https://openliberty.io/guides/rest-intro.html[REST guide] at as an exemplar guide.
 //-----------------------------------------------------
 
 
@@ -64,7 +62,6 @@ Use the following include to pull in the git clone instructions from the guides-
 
 [role="command"]
 include::{common-includes}/gitclone.adoc[]
-
 
 
 
@@ -97,27 +94,26 @@ include::{common-includes}/trywhatyoubuild-end.adoc[]
 
 == Section title for this section, starting with a gerund like Creating, Building, etc
 
-// Add the various sections that are needed for a particular guide.
+// Delete the following notes as you write your guide
+//-----------------------------------------------------
+Add the various sections that are needed for your particular guide.
+Start each additional section title with a meaningful gerund such as Creating, Building, Testing.
+Follow the gerund with a meaningful noun phrase. For example: Creating a JAX-RS application
+Examples: 
+* Learning to use JAX-RS and CDI
+* Learning how to build a REST service for a todo list application
 
-// Start each additional section title with a meaningful gerund such as Creating, Building, Testing.
-// Follow the gerund with a meaningful noun phrase. For example: Creating a JAX-RS application
-// Have as many sections and section titles as needed.
-// EXAMPLE: * Learning to use JAX-RS and CDI
-// EXAMPLE: * Learning how to build a REST service for a todo list application
+Write a sentence with the context like "Navigate to the `start` directory to begin." in the section where user starts working with the implementation.
 
+What to add for each section:
+* Start each section with a meaningful description about what the user is doing in the section.
+* Include code snippets.
+* Avoid making all the documentation a series of steps and tasks, bullets, or numbered lists.
+* Use tick marks around directories, files, values, class names, method names, and so on.
+* Use hotspots to highlight files in the right pane as described in 
+* Example: `this-is-a-file`, `this/is/a/path`, `thisIsAMethod`.
 
-// Write a sentence with the context like "Navigate to the `start` directory to begin." in the section
-// where user starts working with the implementation.
-
-
-// What to add for each section:
-// Start each section with a meaningful description about what the user is doing in the section.
-// Include code snippets.
-// Avoid making all the documentation a series of steps and tasks, bullets, or numbered lists.
-// Use tick marks around directories, files, values, class names, method names, and so on.
-// Example: `this-is-a-file`, `this/is/a/path`, `thisIsAMethod`.
-
-
+//-----------------------------------------------------
 
 
 
@@ -125,8 +121,7 @@ include::{common-includes}/trywhatyoubuild-end.adoc[]
 // ======================================================================================================
 == Building the model
 
-* Navigate to the `start` directory
-* Represent an entry in a todo list
+Navigate to the `start` directory. You will represent an entry in a todo list.
 
 [role="code_command", subs="quotes"]
 ----
@@ -140,7 +135,7 @@ TodoModel.java
 link:finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[]
 ----
 
-
+The [hotspot]`ToDoModel` has three getters: [hotspot=26-28]`getTitle()`, [hotspot=30-32]`getCompleted()` and [hotspot=34-36]`getId()`.
 * Getters, setters, and default constructor such that the model can be serialized/deserialized easily
 
 == Creating the Manager
