@@ -36,36 +36,34 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 == What you'll learn
 
+// Delete the following notes as you write your guide
 //-----------------------------------------------------
 This guide is a sample guide to help you get started with writing your own. 
 
 This document is the README.adoc where you will be writing your guide. 
-See [README breakdown] to understand how to fill out the front matter and specific instructions on the syntax of writing your guide.
+See https://github.com/OpenLiberty/draft-guides-template/wiki/README-breakdown[README breakdown] to understand how to fill out the front matter and specific instructions on the syntax of writing your guide.
 
 Before you get started you will want to follow these steps: https://github.com/OpenLiberty/draft-guides-template/wiki/Instructions-to-start-writing-a-guide[Instructions to start writing your own guide]
 
+The what you'll learn section is where you will be writing about what the user will learn in a meaningful introduction paragraph. 
+
+Follow the introduction paragraph with more details of what the user will learn, but still keep it brief. See the https://openliberty.io/guides/rest-intro.html[REST guide] at as an exemplar guide.
 //-----------------------------------------------------
-
-
-
-// Write about what the user will learn in a meaningful intro paragraph.
-// Follow the intro paragraph with more details of what the user will learn, but still keep it brief.
-// See the https://openliberty.io/guides/rest-intro.html[REST guide] at as an exemplar guide.
-// ** Any links that you include in this section and in later parts of the guide should be hyperlinked:
-// https://openliberty.io/guides/microprofile-config.html[Configuring microservices]
-
-
-
-
 
 
 == Getting started
 
-// Add this getting started section to your guide if it is applicable.
-// Use the following include to pull in the git clone instructions from the guides-common repo.
+// Delete the following notes as you write your guide
+//-----------------------------------------------------
+
+Add this getting started section to your guide if it is applicable. 
+Use the following include to pull in the git clone instructions from the guides-common repository.
+
+//-----------------------------------------------------
+
 
 [role="command"]
- include::{common-includes}/gitclone.adoc[]
+include::{common-includes}/gitclone.adoc[]
 
 
 
@@ -73,20 +71,28 @@ Before you get started you will want to follow these steps: https://github.com/O
 
 === Try what you’ll build
 
-// This is a subsection of the "Getting started" section above. It should briefly walk the user
-// through how to setup everything in the "finish" directory and try out the finished version of
-// what they will be building.
+// Delete the following notes as you write your guide
+//-----------------------------------------------------
+This is a subsection of the "Getting Started" section above. It should briefly walk the user through how to setup everything in the "finish"
+directory and try out the finished version of what they will be building.
+Use the following include that explains what the finish directory and asks the users to run `mvn install` and `mvn liberty:start-server` in the finish directory.
+If this applies to your guide, keep the trywhatyoubuild-intro.adoc[] include.
+//-----------------------------------------------------
+
 
 [role="command"]
  include::{common-includes}/trywhatyoubuild-intro.adoc[]
 
-// Brief explanation on how to use the finished application.
-// Describe what user expects to see after running the complete version of the application.
+// Delete the following notes as you write your guide
+//-----------------------------------------------------
+Here, you will include a brief explanation on how to use the finished application. 
+Describe what the user expects to see after running the completed version of the application.
+Use the following include that asks users to stop the liberty server with `mvn liberty:stop-server` if they started a server previously.
+If this applies to your guide, keep the trywhatyoubuild-end.adoc[] include.
+//-----------------------------------------------------
 
 [role="command"]
- include::{common-includes}/trywhatyoubuild-end.adoc[]
-
-
+include::{common-includes}/trywhatyoubuild-end.adoc[]
 
 
 == Section title for this section, starting with a gerund like Creating, Building, etc
