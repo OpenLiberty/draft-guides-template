@@ -189,7 +189,7 @@ link:finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoRes
 * The resource methods are accessible via HTTP
 * Use GET, POST, PUT, and DELETE verbs to handle reading, creating, updating, and deleting resources
 * Validate data models and send appropriate response accordingly
-======================================================================================================
+// ======================================================================================================
 
 
 
