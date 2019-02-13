@@ -38,6 +38,10 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 //-----------------------------------------------------
 This guide is a sample guide to help you get started with writing your own. 
+
+This document is the README.adoc where you will be writing your guide. 
+See [README breakdown] to understand how to fill out the front matter and specific instructions on the syntax of writing your guide.
+
 Before you get started you will want to follow these steps: https://github.com/OpenLiberty/draft-guides-template/wiki/Instructions-to-start-writing-a-guide[Instructions to start writing your own guide]
 
 //-----------------------------------------------------
@@ -112,7 +116,7 @@ Before you get started you will want to follow these steps: https://github.com/O
 
 
 // EXAMPLE: The following block demostrates how different sections look like for a todo application.
-======================================================================================================
+// ======================================================================================================
 == Building the model
 
 * Navigate to the `start` directory
