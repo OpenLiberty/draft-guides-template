@@ -38,14 +38,13 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 // Delete the following notes as you write your guide
 //-----------------------------------------------------
-This guide is a sample guide to help you get started with writing your own. 
 
+This guide is a sample guide to help you get started with writing your own. 
 This document is the README.adoc where you will be writing your guide. 
 See https://github.com/OpenLiberty/draft-guides-template/wiki/README-breakdown[README breakdown] to understand how to fill out the front matter and specific instructions on the syntax of writing your guide.
-
 Before you get started you will want to follow these steps: https://github.com/OpenLiberty/draft-guides-template/wiki/Instructions-to-start-writing-a-guide[Instructions to start writing your own guide]
-
 The what you'll learn section is where you will be writing about what the user will learn in a meaningful introduction paragraph. Follow the introduction paragraph with more details of what the user will learn, but still keep it brief. See the https://openliberty.io/guides/rest-intro.html[REST guide] at as an exemplar guide.
+
 //-----------------------------------------------------
 
 
@@ -70,10 +69,12 @@ include::{common-includes}/gitclone.adoc[]
 
 // Delete the following notes as you write your guide
 //-----------------------------------------------------
+
 This is a subsection of the "Getting Started" section above. It should briefly walk the user through how to setup everything in the "finish"
 directory and try out the finished version of what they will be building.
 Use the following include that explains what the finish directory and asks the users to run `mvn install` and `mvn liberty:start-server` in the finish directory.
 If this applies to your guide, keep the trywhatyoubuild-intro.adoc[] include.
+
 //-----------------------------------------------------
 
 
@@ -82,10 +83,12 @@ If this applies to your guide, keep the trywhatyoubuild-intro.adoc[] include.
 
 // Delete the following notes as you write your guide
 //-----------------------------------------------------
+
 Here, you will include a brief explanation on how to use the finished application. 
 Describe what the user expects to see after running the completed version of the application.
 Use the following include that asks users to stop the liberty server with `mvn liberty:stop-server` if they started a server previously.
 If this applies to your guide, keep the trywhatyoubuild-end.adoc[] include.
+
 //-----------------------------------------------------
 
 [role="command"]
@@ -96,6 +99,7 @@ include::{common-includes}/trywhatyoubuild-end.adoc[]
 
 // Delete the following notes as you write your guide
 //-----------------------------------------------------
+
 Add the various sections that are needed for your particular guide.
 Start each additional section title with a meaningful gerund such as Creating, Building, Testing.
 Follow the gerund with a meaningful noun phrase. For example: Creating a JAX-RS application
@@ -135,12 +139,13 @@ TodoModel.java
 link:finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[]
 ----
 
-The [hotspot]`ToDoModel` has three getters: [hotspot=26-28]`getTitle()`, [hotspot=30-32]`getCompleted()` and [hotspot=34-36]`getId()`.
-* Getters, setters, and default constructor such that the model can be serialized/deserialized easily
+The [hotspot]`ToDoModel` has three getters: [hotspot=26-28]`getTitle()`, [hotspot=30-32]`getCompleted()` 
+and [hotspot=34-36]`getId()` and three setters: [hotspot=42-44]`setTitle()`, [hotspot=46-48]`setCompleted()` and [hotspot=50-52]`setId()`.
+
 
 == Creating the Manager
 
-* Create a manager that is injected into the JAX-RS resource
+Next, we will create a manager that is injected into the JAX-RS resource.
 
 
 [role="code_command", subs="quotes"]
@@ -167,13 +172,13 @@ SampleTodoManager.java
 link:finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[]
 ----
 
-* Implemented basic CRUD (Create, Read, Update, and Delete) operations.
-* Manager is ApplicationScoped, which essentially means that it is a singleton.
+We've implemented basic CRUD (Create, Read, Update, and Delete) operations with [hotspot=32-36]`createTodo()`, [hotspot=27-29]`getTodos()`, [hotspot=47-54]`updateTodo()` and [hotspot=60-68]`deleteTodo()`.
+The SampleTodoManager is [hotspot=14 file=1]`@ApplicationScoped`, which essentially means that it is a singleton.
 
 == Creating the JAX-RS resource
 
-* Description of the technology, possibly with a link to learn more.
-* Use CDI to inject the todo manager into the resource
+
+Next, we will use CDI to inject the todo manager into the resource.
 
 [role="code_command", subs="quotes"]
 ----
@@ -187,11 +192,10 @@ TodoResource.java
 link:finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[]
 ----
 
-* The resource methods are accessible via HTTP
-* Use GET, POST, PUT, and DELETE verbs to handle reading, creating, updating, and deleting resources
-* Validate data models and send appropriate response accordingly
+The resource methods are accessible via HTTP. The [hotspot]`TodoResource` class also uses [hotspot=27 hotspot=33]`@GET`, [hotspot=45]`@POST`, [hotspot=56]`@PUT`, and [hotspot=73]`@DELETE` annotations to handle reading, creating, updating, and deleting resources
+The data models are validated and then send appropriate responses accordingly. For example the [hotspot=36-43]`getTodo()` method checks if [hotspot=38-40]`result.isPresent()` and sends a [hotspot=39]`Status.NOT_FOUND` response if the result is not there.
 // ======================================================================================================
-
+// END OF EXAMPLE
 
 
 == Building and running the application
