@@ -12,7 +12,7 @@ Welcome to Open Liberty! In order to contribute a guide for Open Liberty, follow
 
 ### Step 2 (Optional): Try some existing guides.
 
-Use the guides on https://openliberty.io/guides/[openliberty.io] as examples. 
+Use the guides on https://openliberty.io/guides/[openliberty.io] as examples.
 
 If you're not sure where to start, try the https://openliberty.io/guides/rest-intro.html[Creating a RESTful web service] guide followed by the  https://openliberty.io/guides/cdi-intro.html[Injecting dependencies into microservices] guide.
 
@@ -67,7 +67,7 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 //
 
 
-:page-layout: guide
+:page-layout: guide-multipane
 // INSTRUCTION: The project id is the part of the git repository after the guide- and must be specified
 // :projectid: github repo name without the `guide-` prefix
 :projectid: template
@@ -77,19 +77,20 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 :page-releasedate: 2018-05-14
 // INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
-// INSTUCTION: Please provide relevant tags, try to avoid inventing new ones.
-:page-tags: ['REST', 'Getting Started', 'CDI', 'JAX-RS']
-// INSTRUCTION: Specify the unique name of the guide that is used in the permalink.  
+:guide-author: Open Liberty
+// INSTUCTION: Please provide relevant tags, try to avoid inventing new ones. Use some of "MicroProfile, Maven, Docker, Kubernetes, Gradle, Java EE, Security".
+:page-tags: ['Java EE']
+// INSTRUCTION: Specify the unique name of the guide that is used in the permalink.
 :page-related-guides: ['cdi-intro', 'rest-intro']
-// INSTRUCTION: Set 'basic', 'microprofile', 'none' 
+// INSTRUCTION: Set 'basic', 'microprofile', 'none'
 :page-guide-category: microprofile
- // INSTRUCTION: 
+ // INSTRUCTION:
 // Requirement: Must define :page-guide-category:
 // Places the guide into the essentials section of a category
 :page-essential: false
- // INSTRUCTION: 
+ // INSTRUCTION:
 // Requirement: Must have :page-essential: true
-// Number is used to sort guide from left (lowest number) to right (highest number) in 
+// Number is used to sort guide from left (lowest number) to right (highest number) in
 // the essentials section of a category
 :page-essential-order: 3
 // INSTRUCTION: Specify the slug in the website. This must be unique.
@@ -101,10 +102,6 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 // INSTRUCTION: Update the SEO desciption for the guide
 :page-seo-description: Find out how to create a REST service on Open Liberty
 // INSTRUCTION: You can't have a new line between the attributes and the title.
-
-
-
-
 = Title of guide, starting with a gerund (Creating, Administering, and so on)
 // EXAMPLE: Creating a REST API for a todo list application
 
@@ -112,7 +109,7 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
 // Start the introduction with "You'll explore how to..." or something similarly catchy.
-// Write no more than two sentences, with meaningful information on what the user can accomplish 
+// Write no more than two sentences, with meaningful information on what the user can accomplish
 // with this guide.
 // Do not start the introduction with "This guide...".
 // EXAMPLE: Learn how to create a todo list API as a REST service using JAX-RS, CDI, and Open Liberty.
@@ -134,7 +131,7 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 == Getting started
 
-// Add this getting started section to your guide if it is applicable. 
+// Add this getting started section to your guide if it is applicable.
 // Use the following include to pull in the git clone instructions from the guides-common repo.
 
  include::{common-includes}/gitclone.adoc[]
@@ -145,8 +142,8 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 === Try what you’ll build
 
-// This is a subsection of the "Getting started" section above. It should briefly walk the user 
-// through how to setup everything in the "finish" directory and try out the finished version of 
+// This is a subsection of the "Getting started" section above. It should briefly walk the user
+// through how to setup everything in the "finish" directory and try out the finished version of
 // what they will be building.
 
  include::{common-includes}/trywhatyoubuild-intro.adoc[]
@@ -170,7 +167,7 @@ NOTE: This repository contains the guide documentation source. To view the guide
 // EXAMPLE: * Learning how to build a REST service for a todo list application
 
 
-// Write a sentence with the context like "Navigate to the `start` directory to begin." in the section 
+// Write a sentence with the context like "Navigate to the `start` directory to begin." in the section
 // where user starts working with the implementation.
 
 
@@ -192,11 +189,14 @@ NOTE: This repository contains the guide documentation source. To view the guide
 * Navigate to the `start` directory
 * Represent an entry in a todo list
 
-Create the todo model class in the
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `TodoModel` class.#
+`src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java`
+----
 
-`src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java` file:
-
-[source, Java]
+TodoModel.java
+[source, Java, linenums, indent=0, role="code_column"]
 ----
 include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[tags=**;!copyright;]
 ----
@@ -207,43 +207,54 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoMo
 
 * Create a manager that is injected into the JAX-RS resource
 
-Create the todo manager interface in the 
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `TodoManager` interface.#
+`src/main/java/io/openliberty/guides/todo/managers/TodoManager.java`
+----
 
-`src/main/java/io/openliberty/guides/todo/managers/TodoManager.java` file:
-
-[source, Java]
+TodoManager.java
+[source, Java, linenums, indent=0, role="code_column"]
 ----
 include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/TodoManager.java[tags=**;!copyright;]
 ----
 
-Next, create the sample todo manager class in the 
+* Next, create the sample todo manager class
 
-`src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java` file:
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Create the `SampleTodoManager` class.#
+`src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java`
+----
 
-[source, Java]
+SampleTodoManager.java
+[source, Java, linenums, indent=0, role="code_column"]
 ----
 include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;]
 ----
 
-* Implemented basic CRUD (Create, Read, Update, and Delete) operations.
-* Manager is ApplicationScoped, which essentially means that it is a singleton.
+* Implemented basic CRUD ([hotspot=32-36 file=1]Create, [hotspot=39-44 file=1]Read, [hotspot=47-57 file=1]Update, and [hotspot=60-68 file=1]Delete) operations.
+* Manager is [hotspot=14 file=1]ApplicationScoped, which essentially means that it is a singleton.
 
 == Creating the JAX-RS resource
 
 * Description of the technology, possibly with a link to learn more.
 * Use CDI to inject the todo manager into the resource
 
-Create the todo resource class in the 
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `TodoResource` class.#
+`src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java`
+----
 
-`src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java` file:
-
-[source, Java]
+TodoResource.java
+[source, Java, linenums, indent=0, role="code_column"]
 ----
 include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[tags=**;!copyright;]
 ----
 
 * The resource methods are accessible via HTTP
-* Use GET, POST, PUT, and DELETE verbs to handle reading, creating, updating, and deleting resources
+* Use [hotspot=27-47]GET, [hotspot=45-54]POST, [hotspot=56-71]PUT, and [hotspot=73-83]DELETE verbs to handle reading, creating, updating, and deleting resources
 * Validate data models and send appropriate response accordingly
 ======================================================================================================
 
@@ -261,7 +272,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 // Sample usage of the application
 // Suggestions for what changes the reader can make to explore the code
 
-// Use the following include to pull in the Maven rebuild instructions from the 
+// Use the following include to pull in the Maven rebuild instructions from the
 // guides-common repo.
  include::{common-includes}/mvncompile.adoc[]
 
@@ -272,17 +283,22 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 // Show how to test your application.
 
 
-// EXAMPLE: 
+// EXAMPLE:
 ======================================================================================================
-Create the todo test class in the 
 
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `TodoTest` class.#
 `finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java` file:
-[source, Java]
+----
+
+TodoTest.java
+[source, Java, linenums, indent=0, role="code_column"]
 ----
 include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[tags=**;!copyright;]
 ----
 
-* Explain what each test case is testing
+* Explain what each [hotspot=13-20]`@Test` test case is testing
 * Explain key methods
 ======================================================================================================
 
@@ -292,8 +308,8 @@ include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.j
 // Including a listing block with test results here
 // Show console output of the test results
 
-// OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that 
-// will cause the tests to fail. Be brief and don't give the users all of the instructions. 
+// OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that
+// will cause the tests to fail. Be brief and don't give the users all of the instructions.
 // At this point, they should be comfortable enough to figure it out on their own.
 
 
@@ -305,11 +321,11 @@ include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.j
 
 // Briefly summarize what the user achieved in this guide (1-2 sentences).
 
-// OPTIONAL: briefly state what the user could do next now that they've learned the 
+// OPTIONAL: briefly state what the user could do next now that they've learned the
 // technologies in this guide.
 
 // Include the below from the guides-common repo to tell users how they can contribute to the guide
- include::{common-includes}/finish.adoc[]
+ include::{common-includes}/attribution.adoc[subs="attributes"]
 
 // DO NO CREATE ANYMORE SECTIONS AT THIS POINT
 // Related guides will be added in automatically here if you included them in ":page-related-guides"
