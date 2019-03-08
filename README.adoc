@@ -57,7 +57,7 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 ```
 // INSTRUCTION: The copyright statement must appear at the top of the file
 //
-// Copyright (c) 2018 IBM Corporation and others.
+// Copyright (c) 2019 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -125,33 +125,52 @@ NOTE: This repository contains the guide documentation source. To view the guide
 // https://openliberty.io/guides/rest-intro.html
 // https://github.com/OpenLiberty/guide-rest-intro
 
+// EXAMPLE:
+You'll learn how to create a todo list microservice using JAX-RS, CDI and Open Liberty. You will use Maven throughout the guide to build the microservice and deploy it to run on the Open Liberty application server.
+
+=== What is JAX-RS
+Add a brief description of JAX-RS
+
+=== What is CDI
+Add a brief description of CDI
+
+=== What is Open Liberty
+Add brief description of Open Liberty, where applicable
+
+Brief description of the todo list micrioservice
 
 
 
-
-== Getting started
+///////////////////////////
+// Getting started
+///////////////////////////
 
 // Add this getting started section to your guide if it is applicable.
 // Use the following include to pull in the git clone instructions from the guides-common repo.
 
- include::{common-includes}/gitclone.adoc[]
+[role='command']
+include::{common-includes}/gitclone.adoc[]
+// This include adoc will have the heading "Getting started". If you are not using this command include statement, you'll need to add it as a subheading, ie, "== Getting started"
 
 
 
-
-
-=== Try what you’ll build
+///////////////////////////
+// Try what you’ll build
+///////////////////////////
 
 // This is a subsection of the "Getting started" section above. It should briefly walk the user
 // through how to setup everything in the "finish" directory and try out the finished version of
 // what they will be building.
 
- include::{common-includes}/trywhatyoubuild-intro.adoc[]
+[role='command']
+include::{common-includes}/trywhatyoubuild-intro.adoc[]
+// This include adoc will have the subheading "Try what you'll build". If you are not using this command include statement, you'll need to add it as a subheading, ie, "=== Try what you'll build"
 
 // Brief explanation on how to use the finished application.
 // Describe what user expects to see after running the complete version of the application.
 
- include::{common-includes}/trywhatyoubuild-end.adoc[]
+[role='command']
+include::{common-includes}/trywhatyoubuild-end.adoc[]
 
 
 
@@ -163,8 +182,13 @@ NOTE: This repository contains the guide documentation source. To view the guide
 // Start each additional section title with a meaningful gerund such as Creating, Building, Testing.
 // Follow the gerund with a meaningful noun phrase. For example: Creating a JAX-RS application
 // Have as many sections and section titles as needed.
-// EXAMPLE: * Learning to use JAX-RS and CDI
-// EXAMPLE: * Learning how to build a REST service for a todo list application
+// EXAMPLES:
+
+* Building a todo list model
+
+* Creating an application manager
+
+* Creating the JAX-RS Resource
 
 
 // Write a sentence with the context like "Navigate to the `start` directory to begin." in the section
@@ -180,11 +204,9 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 
 
-
-
-// EXAMPLE: The following block demostrates how different sections look like for a todo application.
-======================================================================================================
-== Building the model
+// EXAMPLE: The following block demonstrates how different sections look like for a todo application.
+// ======================================================================================================
+== Building a todo list model
 
 * Navigate to the `start` directory
 * Represent an entry in a todo list
@@ -203,7 +225,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoMo
 
 * Getters, setters, and default constructor such that the model can be serialized/deserialized easily
 
-== Creating the Manager
+== Creating an application manager
 
 * Create a manager that is injected into the JAX-RS resource
 
@@ -233,8 +255,8 @@ SampleTodoManager.java
 include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;]
 ----
 
-* Implemented basic CRUD ([hotspot=32-36 file=1]Create, [hotspot=39-44 file=1]Read, [hotspot=47-57 file=1]Update, and [hotspot=60-68 file=1]Delete) operations.
-* Manager is [hotspot=14 file=1]ApplicationScoped, which essentially means that it is a singleton.
+* Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`, [hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
+* Manager is [hotspot=14 file=1]`ApplicationScoped`, which essentially means that it is a singleton.
 
 == Creating the JAX-RS resource
 
@@ -254,19 +276,20 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 ----
 
 * The resource methods are accessible via HTTP
-* Use [hotspot=27-47]GET, [hotspot=45-54]POST, [hotspot=56-71]PUT, and [hotspot=73-83]DELETE verbs to handle reading, creating, updating, and deleting resources
+* Use [hotspot=27-43]`GET`, [hotspot=45-54]`POST`, [hotspot=56-71]`PUT`, and [hotspot=73-83]`DELETE` verbs to handle reading, creating, updating, and deleting resources
 * Validate data models and send appropriate response accordingly
-======================================================================================================
+// ======================================================================================================
 
 
 
 
-
-
-== Building and running the application
+//////////////////////////////////////////
+// Building and running the application
+//////////////////////////////////////////
 
 // Use the following include to pull in the Maven build instructions from the guides-common repo.
- include::{common-includes}/mvnbuild.adoc[]
+[role='command']
+include::{common-includes}/mvnbuild.adoc[]
 
 // In between here, you should state where you application can be found now that its running. ie. urls
 // Sample usage of the application
@@ -274,7 +297,9 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 
 // Use the following include to pull in the Maven rebuild instructions from the
 // guides-common repo.
+[role='command']
  include::{common-includes}/mvncompile.adoc[]
+
 
 
 
@@ -282,14 +307,13 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 
 // Show how to test your application.
 
-
 // EXAMPLE:
-======================================================================================================
+// ======================================================================================================
 
 [role="code_command hotspot", subs="quotes"]
 ----
 #Create the `TodoTest` class.#
-`finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java` file:
+`finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java`
 ----
 
 TodoTest.java
@@ -300,10 +324,11 @@ include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.j
 
 * Explain what each [hotspot=13-20]`@Test` test case is testing
 * Explain key methods
-======================================================================================================
+// ======================================================================================================
 
 // Include this for info on how to run the tests
- include::{common-includes}/mvnverify.adoc[]
+[role='command']
+include::{common-includes}/mvnverify.adoc[]
 
 // Including a listing block with test results here
 // Show console output of the test results
@@ -311,8 +336,6 @@ include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.j
 // OPTIONAL: after listing the test results, mention a simple change a user can make/introduce that
 // will cause the tests to fail. Be brief and don't give the users all of the instructions.
 // At this point, they should be comfortable enough to figure it out on their own.
-
-
 
 
 
