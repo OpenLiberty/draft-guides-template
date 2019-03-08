@@ -141,6 +141,7 @@ Brief description of the todo list micrioservice
 
 
 
+
 ///////////////////////////
 // Getting started
 ///////////////////////////
@@ -150,7 +151,9 @@ Brief description of the todo list micrioservice
 
 [role='command']
 include::{common-includes}/gitclone.adoc[]
-// This include adoc will have the heading "Getting started". If you are not using this command include statement, you'll need to add it as a subheading, ie, "== Getting started"
+// This include adoc will have the heading "Getting started".
+// If you are not using this command include statement, you'll need to add it as a subheading, ie, "== Getting started".
+
 
 
 
@@ -164,7 +167,8 @@ include::{common-includes}/gitclone.adoc[]
 
 [role='command']
 include::{common-includes}/trywhatyoubuild-intro.adoc[]
-// This include adoc will have the subheading "Try what you'll build". If you are not using this command include statement, you'll need to add it as a subheading, ie, "=== Try what you'll build"
+// This include adoc will have the subheading "Try what you'll build".
+// If you are not using this command include statement, you'll need to add it as a subheading, ie, "=== Try what you'll build".
 
 // Brief explanation on how to use the finished application.
 // Describe what user expects to see after running the complete version of the application.
@@ -206,7 +210,7 @@ include::{common-includes}/trywhatyoubuild-end.adoc[]
 
 // EXAMPLE: The following block demonstrates how different sections look like for a todo application.
 // ======================================================================================================
-== Building a todo list model
+== EXAMPLE: Building a todo list model
 
 * Navigate to the `start` directory
 * Represent an entry in a todo list
@@ -225,7 +229,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoMo
 
 * Getters, setters, and default constructor such that the model can be serialized/deserialized easily
 
-== Creating an application manager
+== EXAMPLE: Creating an application manager
 
 * Create a manager that is injected into the JAX-RS resource
 
@@ -258,7 +262,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samp
 * Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`, [hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
 * Manager is [hotspot=14 file=1]`ApplicationScoped`, which essentially means that it is a singleton.
 
-== Creating the JAX-RS resource
+== EXAMPLE: Creating the JAX-RS resource
 
 * Description of the technology, possibly with a link to learn more.
 * Use CDI to inject the todo manager into the resource
@@ -290,6 +294,8 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 // Use the following include to pull in the Maven build instructions from the guides-common repo.
 [role='command']
 include::{common-includes}/mvnbuild.adoc[]
+// This include adoc will have the subheading "Building and running the application".
+// If you are not using this command include statement, you'll need to add it as a subheading, ie, "== Building and running the application".
 
 // In between here, you should state where you application can be found now that its running. ie. urls
 // Sample usage of the application
