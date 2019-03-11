@@ -53,6 +53,7 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 ## APPENDIX A: A template README.adoc
 Please remove all the instructions before `APPENDIX A` prior to commit. Most comments should be removed, although not the copyright.
+You can copy the content in the `README.adoc` file to view it on the openliberty.io UI.
 
 ```
 // INSTRUCTION: The copyright statement must appear at the top of the file
@@ -65,8 +66,6 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 // Contributors:
 //     IBM Corporation
 //
-
-
 :page-layout: guide-multipane
 // INSTRUCTION: The project id is the part of the git repository after the guide- and must be specified
 // :projectid: github repo name without the `guide-` prefix
@@ -74,7 +73,7 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 // INSTRUCTION: Provide an estimate of how long the guide will take to go through.
 :page-duration: 15 minutes
 // INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.
-:page-releasedate: 2018-05-14
+:page-releasedate: 2019-03-11
 // INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
 :guide-author: Open Liberty
@@ -85,22 +84,20 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 :page-related-guides: ['cdi-intro', 'rest-intro']
 // INSTRUCTION: Set 'basic', 'microprofile', 'none'
 :page-guide-category: microprofile
- // INSTRUCTION:
+// INSTRUCTION: Places the guide into the essentials section of a category
 // Requirement: Must define :page-guide-category:
-// Places the guide into the essentials section of a category
 :page-essential: false
- // INSTRUCTION:
-// Requirement: Must have :page-essential: true
-// Number is used to sort guide from left (lowest number) to right (highest number) in
+// INSTRUCTION: Number is used to sort guide from left (lowest number) to right (highest number) in
 // the essentials section of a category
+// Requirement: Must have :page-essential: true
 :page-essential-order: 3
 // INSTRUCTION: Specify the slug in the website. This must be unique.
 :page-permalink: /guides/{projectid}
-// INSTRUCTION: Source the common page elements, clone git@github.com:OpenLiberty/guides-common.git.
+// INSTRUCTION: Source the common page elements, clone `git@github.com:OpenLiberty/guides-common.git`.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 // INSTRUCTION: Update the SEO title for the guide
 :page-seo-title: Creating a REST service
-// INSTRUCTION: Update the SEO desciption for the guide
+// INSTRUCTION: Update the SEO description for the guide
 :page-seo-description: Find out how to create a REST service on Open Liberty
 // INSTRUCTION: You can't have a new line between the attributes and the title.
 = Title of guide, starting with a gerund (Creating, Administering, and so on)
@@ -142,7 +139,7 @@ to run on the Open Liberty application server.
 === What is Open Liberty
 * Add brief description of Open Liberty, where applicable
 
-* Brief description of the todo list micrioservice
+Brief description of the todo list micrioservice
 // =============================================================================
 
 
@@ -360,6 +357,7 @@ include::{common-includes}/mvnverify.adoc[]
 == Great work! You're done!
 
 // Briefly summarize what the user achieved in this guide (1-2 sentences).
+EXAMPLE: You have just completed building a simple todo list application using JAXRS and CDI services in Open Liberty.
 
 // OPTIONAL: briefly state what the user could do next now that they've learned the
 // technologies in this guide.
