@@ -78,7 +78,8 @@ Please remove all the instructions before `APPENDIX A` prior to commit. Most com
 // INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
 :guide-author: Open Liberty
-// INSTUCTION: Please provide relevant tags, try to avoid inventing new ones. Use some of "MicroProfile, Maven, Docker, Kubernetes, Gradle, Java EE, Security".
+// INSTUCTION: Please provide relevant tags, try to avoid inventing new ones.
+// Use some of "MicroProfile, Maven, Docker, Kubernetes, Gradle, Java EE, Security".
 :page-tags: ['Java EE']
 // INSTRUCTION: Specify the unique name of the guide that is used in the permalink.
 :page-related-guides: ['cdi-intro', 'rest-intro']
@@ -133,13 +134,13 @@ You will use Maven throughout the guide to build the microservice and deploy it
 to run on the Open Liberty application server.
 
 === What is JAX-RS
-Add a brief description of JAX-RS
+* Add a brief description of JAX-RS
 
 === What is CDI
-Add a brief description of CDI
+* Add a brief description of CDI
 
 === What is Open Liberty
-Add brief description of Open Liberty, where applicable
+* Add brief description of Open Liberty, where applicable
 
 * Brief description of the todo list micrioservice
 // =============================================================================
@@ -265,7 +266,8 @@ SampleTodoManager.java
 include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;]
 ----
 
-* Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`, [hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
+* Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`,
+[hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
 * Manager is [hotspot=14 file=1]`ApplicationScoped`, which essentially means that it is a singleton.
 
 == EXAMPLE: Creating the JAX-RS resource
@@ -286,7 +288,9 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 ----
 
 * The resource methods are accessible via HTTP
-* Use [hotspot=27-43]`GET`, [hotspot=45-54]`POST`, [hotspot=56-71]`PUT`, and [hotspot=73-83]`DELETE` verbs to handle reading, creating, updating, and deleting resources
+* Use [hotspot=27-43]`GET`, [hotspot=45-54]`POST`, [hotspot=56-71]`PUT`,
+and [hotspot=73-83]`DELETE` verbs to handle reading, creating, updating,
+and deleting resources
 * Validate data models and send appropriate response accordingly
 // ======================================================================================================
 
