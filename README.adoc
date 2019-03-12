@@ -53,7 +53,6 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 ## APPENDIX A: A template README.adoc
 Please remove all the instructions before `APPENDIX A` prior to commit. Most comments should be removed, although not the copyright.
-You can copy the content in the `README.adoc` file to view it on the openliberty.io UI.
 
 ```
 // INSTRUCTION: The copyright statement must appear at the top of the file
@@ -260,7 +259,7 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/Todo
 SampleTodoManager.java
 [source, Java, linenums, indent=0, role="code_column"]
 ----
-include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;]
+include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;!copyright;]
 ----
 
 * Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`,
@@ -312,7 +311,7 @@ include::{common-includes}/mvnbuild.adoc[]
 // Use the following include to pull in the Maven rebuild instructions from the
 // guides-common repo.
 [role='command']
- include::{common-includes}/mvncompile.adoc[]
+include::{common-includes}/mvncompile.adoc[]
 
 
 
