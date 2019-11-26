@@ -12,16 +12,16 @@
  // end::copyright[]
 package it.io.openliberty.guides.todolistSample;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TodoTest {
+public class TodoIT {
     @Test
     public void testGetTodos() throws Exception {
         HttpClient client = HttpClients.createDefault();
