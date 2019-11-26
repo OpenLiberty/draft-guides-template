@@ -246,9 +246,9 @@ include::{common-includes}/devmode-start.adoc[]
 ----
 
 TodoModel.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[tags=**;!copyright;]
+include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoModel.java[]
 ----
 
 * Getters, setters, and default constructor such that the model can be serialized/deserialized easily
@@ -264,9 +264,9 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/models/TodoMo
 ----
 
 TodoManager.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/TodoManager.java[tags=**;!copyright;]
+include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/TodoManager.java[]
 ----
 
 * Next, create the sample todo manager class
@@ -278,9 +278,9 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/Todo
 ----
 
 SampleTodoManager.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[tags=**;!copyright;]
+include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[]
 ----
 
 * Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`,
@@ -299,9 +299,9 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samp
 ----
 
 TodoResource.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
-include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[tags=**;!copyright;]
+include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/TodoResource.java[]
 ----
 
 * The resource methods are accessible via HTTP
@@ -345,9 +345,9 @@ include::{common-includes}/devmode-build.adoc[]
 ----
 
 TodoTest.java
-[source, Java, linenums, indent=0, role="code_column"]
+[source, Java, linenums, indent=0, role="code_column hide_tags"]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[tags=**;!copyright;]
+include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
 ----
 
 * Explain what each [hotspot=13-20]`@Test` test case is testing
