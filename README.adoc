@@ -340,14 +340,14 @@ include::{common-includes}/devmode-build.adoc[]
 
 [role="code_command hotspot", subs="quotes"]
 ----
-#Create the `TodoTest` class.#
-`finish/src/test/java/it/io/openliberty/guides/todo/TodoTest.java`
+#Create the `TodoIT` class.#
+`finish/src/test/java/it/io/openliberty/guides/todo/TodoIT.java`
 ----
 
-TodoTest.java
+TodoIT.java
 [source, Java, linenums, indent=0, role="code_column hide_tags"]
 ----
-include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoTest.java[]
+include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoIT.java[]
 ----
 
 * Explain what each [hotspot=13-20]`@Test` test case is testing
