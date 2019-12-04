@@ -6,30 +6,32 @@
 // Contributors:
 //     IBM Corporation
 //
-:projectid: rest-intro
+:projectid: IntelliJ
 :page-layout: guide-multipane
 :page-duration: 30 minutes
-:page-releasedate: 2017-09-19
+:page-releasedate: 2019-12-03
 :page-guide-category: microprofile
 :page-essential: true
 :page-essential-order: 1
-:page-description: Learn how to create a REST service with JAX-RS, JSON-B, and Open Liberty.
+:page-description: Learn how to create a REST service with JAX-RS, JSON-B, and Open Liberty with IntelliJ.
 :guide-author: Open Liberty
-:page-tags: ['MicroProfile', 'Java EE', 'Jakarta EE']
-:page-related-guides: ['rest-client-java', 'rest-client-angularjs']
+:page-tags: ['MicroProfile', 'Java EE', 'Jakarta EE', 'IntelliJ']
+:page-related-guides: ['rest-client-java', 'rest-client-angularjs', 'rest-intro']
 :page-permalink: /guides/{projectid}
 :repo-description: Visit the https://openliberty.io/guides/{projectid}.html[website] for the rendered version of the guide.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:icons: font
+
 = Creating a RESTful web service with IntelliJ
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to create a REST service with JAX-RS, JSON-B, and Open Liberty.
+Learn how to create a REST service with JAX-RS, JSON-B, and Open Liberty with IntelliJ.
 
 == What you'll learn
 
-You will learn how to build and test a simple REST service with JAX-RS and JSON-B, which will expose
+You will learn how to get started with IntelliJ by building and testing a simple REST service using JAX-RS and JSON-B, which will expose
 the JVM's system properties. The REST service will respond to `GET` requests made to the `\http://localhost:9080/LibertyProject/System/properties` URL.
 
 The service responds to a `GET` request with a JSON representation of the system properties, where
@@ -51,14 +53,62 @@ resources.
 The service responds to `GET` requests to the `/System/properties` path. The `GET` request should
 return a `200 OK` response that contains all of the JVM's system properties.
 
-[role="command"]
-include::{common-includes}/gitclone.adoc[]
+== Installing and configuring IntelliJ
+
+If IntelliJ isn't installed, download and install it on your machine. The free community edition should suffice for this
+guide.
+
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+https://www.jetbrains.com/idea/download/#section=windows[^]
+--
+
+[.tab_content.mac_section]
+--
+https://www.jetbrains.com/idea/download/#section=mac[^]
+--
+
+[.tab_content.linux_section]
+--
+https://www.jetbrains.com/idea/download/#section=linux[^]
+
+--
+
+== Getting started
+
+Launch IntelliJ and select `Get from Version Control` and paste the following in the `URL` field:
+`https://github.com/meswan/guide-IntelliJ.git[^]` and select `Clone`.
+
+
+
+IMPORTANT: Make a note of the directory path that the project is being cloned to.
+
+
+When prompted if you would like to create a project, select `Yes`. On the `Import Project` dialog, choose `Import
+Project from external model`, select `Maven` and click on `Finish`.
+
+You should see a progress bar indicating the status of the operation. Click on `Open` on the welcome screen and
+navigate to the directory that the project was saved and select `Ok`. On the top left hand side of the screen,
+expand the guide-{projectid} project.
+
+
+The `start` directory contains the starting project that you will build upon.
+
+The `finish` directory contains the finished project that you will build.
+
+At the bottom right of the IDE, click on `Terminal` to bring up the console. By default, it should start in the
+guide-{projectid} directory.
+
+== Configure the build project
+TODO:
 
 === Try what you'll build
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
-To try out the application, first go to the `finish` directory and run the following Maven 
+To try out the application, first go to the `finish` directory and run the following Maven
 goal to build the application and deploy it to Open Liberty:
 [role='command']
 ```
@@ -66,10 +116,10 @@ mvn liberty:run
 ```
 
 Check out the service at the
-http://localhost:9080/LibertyProject/System/properties[^] URL. 
+http://localhost:9080/LibertyProject/System/properties[^] URL.
 
 After you are done checking out the application, stop the Open Liberty server by pressing `CTRL+C`
-in the shell session where you ran the server. Alternatively, you can run the `liberty:stop` goal 
+in the shell session where you ran the server. Alternatively, you can run the `liberty:stop` goal
 from the `finish` directory in another shell session:
 
 [role='command']
@@ -81,7 +131,7 @@ mvn liberty:stop
 
 Navigate to the `start` directory to begin.
 
-Start Open Liberty in development mode, which starts the Open Liberty server and listens 
+Start Open Liberty in development mode, which starts the Open Liberty server and listens
 for file changes:
 
 [role="command"]
@@ -143,9 +193,9 @@ For this application, a JSON structure is to be returned. The desired `Content-T
 response is `application/json` with `MediaType.APPLICATION_JSON` instead of the `String` content type. Using a constant such as `MediaType.APPLICATION_JSON` is better because if there's a spelling error, a compile failure occurs.
 
 JAX-RS supports a number of ways to marshal JSON. The JAX-RS 2.1 specification mandates JSON-Binding
-(JSON-B) and JAX-B. 
+(JSON-B) and JAX-B.
 
-The method body returns the result of `System.getProperties()` that is of type `java.util.Properties`. Since the method 
+The method body returns the result of `System.getProperties()` that is of type `java.util.Properties`. Since the method
 is annotated with `@Produces(MediaType.APPLICATION_JSON)`, JAX-RS uses JSON-B to automatically convert the returned object
 to JSON data in the HTTP response.
 
@@ -182,7 +232,7 @@ The configuration does the following actions:
 . Configures the server to enable JAX-RS. This is specified in the [hotspot=featureManager file=0]`featureManager` element.
 . Configures the server to resolve the HTTP port numbers from variables, which are then specified in
 the Maven [hotspot=defaultHttpPort hotspot=defaultHttpsPort file=1]`pom.xml` file. This is specified in the [hotspot=httpEndpoint file=0]`<httpEndpoint/>` element. Variables use the `${variableName}` syntax.
-. Configures the server to run the produced web application on a context root specified in the 
+. Configures the server to run the produced web application on a context root specified in the
 [hotspot=appContextRoot file=1]`pom.xml` file. This is specified in the [hotspot=webApplication file=0]`<webApplication/>` element.
 
 pom.xml
@@ -195,11 +245,11 @@ The variables that are being used in the [hotspot=httpEndpoint hotspot=webApplic
 
 == Building and running the application
 
-The Open Liberty server was started in development mode at the beginning of the guide and all the 
+The Open Liberty server was started in development mode at the beginning of the guide and all the
 changes were automatically picked up.
 
 Check out the service that you created at the
-http://localhost:9080/LibertyProject/System/properties[^] URL. 
+http://localhost:9080/LibertyProject/System/properties[^] URL.
 
 
 == Testing the service
