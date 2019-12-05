@@ -1,9 +1,9 @@
-<server description="Intro REST Guide Liberty server">
+<server description="Intro IntelliJ REST Guide Liberty server">
 
   <featureManager>
       <feature>servlet-4.0</feature>
   </featureManager>
 
-  <webApplication location="guide-rest-intro.war"/>
+  <webApplication location="guide-IntelliJ.war"/>
 
 </server>

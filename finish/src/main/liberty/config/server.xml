@@ -1,4 +1,4 @@
-<server description="Intro REST Guide Liberty server">
+<server description="Intro IntelliJ REST Guide Liberty server">
 
   <!-- tag::featureManager[] -->
   <featureManager>
@@ -12,6 +12,6 @@
   <!-- end::httpEndpoint[] -->
   
   <!-- tag::webApplication[] -->
-  <webApplication location="guide-rest-intro.war" contextRoot="${app.context.root}"/>
+  <webApplication location="guide-IntelliJ.war" contextRoot="${app.context.root}"/>
   <!-- end::webApplication[] -->
 </server>
