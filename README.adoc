@@ -102,44 +102,48 @@ NOTE: At the bottom right of the IDE, click on `Terminal` to bring up the consol
 in the `guide-{projectid}` directory.
 
 == Configure the build project
-TODO:
 
-image::temp-screnshot.png[]
+In the `finish` directory, click the top-right `Edit Configurations`. In the pop up window, click the `+` button on the top-left. Select the `maven` in `add new configuration`. Select `finish` directory as the working directory and use
+[role='command'] 
+```
+mvn liberty:run
+```
+
+as the command line. Click "OK" to save changes.
+
+In the `finish` directory, click the top-right `Edit Configurations`. In the pop up window, click the `+` button on the top-left. Select the `maven` in `add new configuration`. Select `finish` directory as the working directory and use
+[role='command'] 
+```
+mvn liberty:stop
+```
+
+as the command line. Click "OK" to save changes.
+
 === Try what you'll build
 
 The `finish` directory in the root of this guide contains the finished application. Give it a try before you proceed.
 
-To try out the application, first go to the `finish` directory and run the following Maven
-goal to build the application and deploy it to Open Liberty:
-[role='command']
-```
-mvn liberty:run
-```
+To try out the application, first go to the `finish` directory and click `run` button in the tool bar and select `liberty:run`  and deploy it to Open Liberty.
 
 Check out the service at the
 http://localhost:9080/LibertyProject/System/properties[^] URL.
 
 After you are done checking out the application, stop the Open Liberty server by pressing `CTRL+C`
-in the shell session where you ran the server. Alternatively, you can run the `liberty:stop` goal
-from the `finish` directory in another shell session:
-
-[role='command']
-```
-mvn liberty:stop
-```
+in the shell session where you ran the server. Alternatively, you can click `run` button in the tool bar and select `liberty:stop`  and deploy it to Open Liberty.
 
 == Creating a JAX-RS application
 
 Navigate to the `start` directory to begin.
 
-Start Open Liberty in development mode, which starts the Open Liberty server and listens
-for file changes:
 
-[role="command"]
+In the `start` directory, click the top-right `Edit Configurations`. In the pop up window, click the `+` button on the top-left. Select the `maven` in `add new configuration`. Select `start` directory as the working directory and use
+[role='command'] 
 ```
 mvn liberty:dev
 ```
+as the command line. Click "OK" to save changes.
 
+You can click `run` button in the tool bar and select `liberty:dev` and start Open Liberty in development mode, which starts the Open Liberty server and listens for file changes.
 
 JAX-RS has two key concepts for creating REST APIs. The most obvious one is the resource itself, which is
 modelled as a class. The second is a JAX-RS application, which groups all exposed resources under a
