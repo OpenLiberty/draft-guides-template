@@ -99,7 +99,7 @@ Most instruction comments should be removed except the copyright.
 //--** INSTRUCTION: Source the common page elements, clone `git@github.com:OpenLiberty/guides-common.git`.
 :common-includes: ../guides-common/
 //--** INSTRUCTION: Source the image directory to include any images for the guide.
-:imagesdir: /img/guide
+:imagesdir: /img/guide/{projectid}
 //--** INSTRUCTION: Update the SEO title for the guide
 :page-seo-title: Creating a REST service
 //--** INSTRUCTION: Update the SEO description for the guide
