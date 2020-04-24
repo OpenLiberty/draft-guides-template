@@ -47,9 +47,9 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 7. Create a branch in the https://github.com/OpenLiberty/guides-common[guides-common] repository. Name your branch with your guide's projectid or something similar. This is where you will make your edits to `guide_categories.json` and `guide_tags.json` in order to categorize your guide and select tags.
 
-** Decide which subcategory your guide best fits into. The guide categories and subcategories are defined in the https://github.com/OpenLiberty/guides-common/blob/master/guide_categories.json[guide_categories.json] file and are shown in the table of contents on the /guides page. Your guide will appear under the subcategory you select in the json file. The order that the categories, subcategories and guides appear on the /guides page is based on the order of the json file.
+** Decide which subcategory your guide best fits into. The guide categories and subcategories are defined in the https://github.com/OpenLiberty/guides-common/blob/master/guide_categories.json[guide_categories.json] file and are shown in the table of contents on the /guides page. Your guide will appear under the subcategory you select in the json file. The order that the categories, subcategories and guides appear on the /guides page is based on the order of the json file. For a draft guide there is no need to include 'draft-guide-' in the json file. (I.e. For `draft-guide-{projectid}`, just add '{projectid}' to the json).
 
-*** If adding your guide to an existing subcategory, simply add the guide's projectid to the `guides` array below the desired `subcateogry_name`. 
+*** If adding your guide to an existing subcategory, simply add the guide's projectid to the `guides` array below the desired `subcateogry_name`.
 
 *** If creating a new subcategory, add a new object to the `subcategories` array in the desired category. The new subcategory needs to have a `subcategory_name` string and a `guides` array. The `subcategory_name` should be sentence case (capitalize only the first letter of the entire phrase) as this is how it will be shown in the table of contents.
 
