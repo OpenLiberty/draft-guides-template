@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.5</version>
+            <version>4.5.13</version>
             <scope>test</scope>
         </dependency>
         <!-- Support for JDK 9 and above -->
@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.3.1</version>
             </plugin>
             <!-- Plugin to run unit tests -->
             <plugin>
@@ -72,7 +72,7 @@
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.3.1</version>
             </plugin>
             <!-- Plugin to run functional tests -->
             <plugin>
