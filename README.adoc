@@ -1,10 +1,44 @@
-= Migration Guide from Cloud Foundry to Paketo Buildpacks
+// Copyright (c) 2019, 2022 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//     IBM Corporation
+//
+
+// :projectid: paketo-buildpacks-intro
+:page-layout: guide-multipane
+// :page-duration: 15 minutes
+// :page-releasedate: 2022-07-01
+:page-description: Learn how to migrate an application using Cloud Foundry buildpacks to Paketo Liberty buildpacks. 
+// :page-tags: ['Docker']
+// :page-permalink: /guides/{projectid}
+// :page-related-guides: ['docker', 'kubernetes-intro']
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
+:source-highlighter: prettify
+:page-seo-title: Building and containerizing microservices with Paketo Buildpacks 
+// :page-seo-description: A getting started tutorial with examples of how to build Open Container Initiative (OCI) images with Paketo Buildpacks and deploying them in popular container managers like Docker and Podman.  
+// :guide-author: Open Liberty
+= Migration Guide for an application using Cloud Foundry Buildpacks to Paketo Buildpacks
 
 // =================================================================================================
 //  What you'll learn
 // =================================================================================================
 
 == What you'll learn
+
+The guide will demonstrate how to migrate an application using Cloud Foundry liberty-for-java buildpack to Paketo Liberty buildpacks. You will learn simple migrations to more advanced migrations using advanced features of the Paketo liberty buildpack. 
+
+The advanced migrations include the learning how to use the following features: 
+
+* Using UBI images 
+* Installing iFixes 
+* Installing custom features 
+* Using different profiles (full, jakarta9, webProfile9, webProfile8, javaee8, microProfile4, microProfile5, kernel)
+* Providing server.xml at build time 
+* Building from a Liberty Server 
+* Building from a Packaged Server.
 
 == Additional prerequisites
 
