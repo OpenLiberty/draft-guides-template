@@ -40,9 +40,8 @@ You will explore how to migrate an application using Cloud Foundry liberty-for-j
 Learn how to migrate an application using Cloud Foundry liberty-for-java buildpack to using Paketo buildpacks. You will learn how to migrate and use advanced features of the Paketo buildpack. 
 
 The migration includes learning how to use the following features: 
-//rewrite sentence 
 
-* Simple migration (reword)
+* Simple migration
 * Providing server.xml at build time 
 * Using different profiles (full, jakarta9, webProfile9, webProfile8, javaee8, microProfile4, microProfile5, kernel)
 * Building from a Liberty Server 
