@@ -56,12 +56,74 @@ The migration includes learning how to use the following features:
 * https://hub.docker.com/search?type=edition&offering=community&q=[Docker]
 * The https://buildpacks.io/docs/tools/pack/[pack CLI]
  
-== Getting started 
+== Simple migration 
 //start with getting started blog post
 //simple migration - push using a war file
 //paketo.io and buildpacks.io website as references
 
-== Simple migration 
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands* 
+// a| Navigate to source code repository (will use Getting started app for example)
+// // delete cell
+// [source, console]
+// git clone https://github.com/IBM-Cloud/get-started-java
+
+
+  
+// a| Navigate to source code repository (will use Getting started app for example)
+// //delete cell
+// [source, console]
+// git clone https://github.com/openliberty/guide-getting-started.git
+// cd guide-getting-started/finish
+
+// a| Run app locally using command line 
+// [source, console]
+// cd get-started-java
+// mvn clean install
+// mvn install liberty:run-server
+
+// a| Create an OCI image and run application locally
+// [source, console]
+// pack config default-builder gcr.io/paketo-buildpacks/builder:base
+
+// [source, console]
+// pack build --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 \
+//   --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp
+
+// [source, console]
+// docker run --rm -p 9080:9080 myapp
+
+
+a| Push app using cloud foundry
+[source, console]
+cf push -p myApp.war
+
+a| Create an OCI image and run application locally
+//Say something about the pack config command what it does
+
+The pack config command sets the default builder using the pack CLI.
+[source, console]
+pack config default-builder gcr.io/paketo-buildpacks/builder:base
+
+The pack build command uses Cloud Native Buildpacks to create an app image from the source code. More info found here: https://buildpacks.io/docs/tools/pack/cli/pack_build/[pack build] 
+[source, console]
+pack build --env BP_JAVA_APP_SERVER=liberty 
+// --env BP_LIBERTY_PROFILE=jakartaee9 \
+//   --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp
+
+[source, console]
+docker run --rm -p 9080:9080 myapp
+// a| Build app from an on-prem Open Liberty installation
+// [source, console]
+// bin/server package defaultServer --include=usr
+
+// [source, console]
+// pack build --path <packaged-server-zip-path> \
+//  --buildpack paketo-buildpacks/eclipse-openj9 \
+//  --buildpack paketo-buildpacks/java myapp
+|=========
 
 == Advanced migrations
 
