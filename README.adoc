@@ -123,8 +123,79 @@ docker run --rm -p 9080:9080 myapp
 // pack build --path <packaged-server-zip-path> \
 //  --buildpack paketo-buildpacks/eclipse-openj9 \
 //  --buildpack paketo-buildpacks/java myapp
+
 |=========
 
+== Providing server.xml at build time
+
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands* 
+
+a| Custom Liberty server configuration with your app
+
+Install the Liberty profile to your workstation. Instructions found here: https://cloud.ibm.com/docs/cloud-foundry-public?topic=cloud-foundry-public-options_for_pushing#server_directory[Server directory]
+
+Run the command:
+[source, console]
+cf push <yourappname> -p wlp/usr/servers/defaultServer
+
+a| Using server.xml at build time:author:
+
+Run the following commands: 
+
+Navigate to getting-started-java directory or any sample app
+[source, console]
+pack config default-builder gcr.io/paketo-buildpacks/builder:base
+
+Build the application on Liberty:
+[source, console]
+pack build --env BP_JAVA_APP_SERVER=liberty
+
+When providing server configuration files like server.xml, these files can only be included in the build by telling the Maven or Gradle buildpacks to provide them. The following environment variables need to be set in your pack build command.
+
+Server Config with Maven applications
+[source, console]
+--env BP_MAVEN_BUILT_ARTIFACT="target/*.[ejw]ar src/main/liberty/config/*"
+
+Server Config with Gradle applications
+[source, console]
+--env BP_GRADLE_BUILT_ARTIFACT="build/libs/*.[ejw]ar src/main/liberty/config/*"
+
+//Add a generic location for server config file. Using bindings 
+
+Check if the server.xml file is in the directory: 
+[source, console]
+docker exec -it $(docker ps -q) /bin/bash
+
+a| Binding service 
+
+[source, console]
+cf bind-service
+
+a| Using bindings - providing server config at build and runtime
+
+Providing server config at build-time and runtime used for secret configuration. Bindings provide credentials and location needed to connect to external services. First create the bindings/liberty folder and add the type file with liberty. Add any config you want to provide at runtime in the directory and the nmount the folder during docker run with --volume $(pwd)/bindings:/platform/bindings
+
+[source, console]
+docker run --env SERVICE_BINDING_ROOT=/bindings --volume <absolute-path-to-binding>:/bindings/<binding-name> <image-name>
+
+|=========
+
+
+=== Using different profiles 
+//Offering different profiles javaee6, javaee7, javaee8
+* Full, jakarta9, webProfile9, webProfile8, javaee8, microProfile4, microProfile5, kernel
+
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands* 
+
+
+
+|=========
 == Advanced migrations
 
 === Using UBI images 
@@ -132,12 +203,6 @@ docker run --rm -p 9080:9080 myapp
 === Installing iFixes 
 
 === Installing customer features
-
-=== Using different profiles 
-
-* Full, jakarta9, webProfile9, webProfile8, javaee8, microProfile4, microProfile5, kernel
-
-=== Providing server.xml at build time
 
 === Building from a Liberty server 
 
