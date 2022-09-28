@@ -254,17 +254,42 @@ Then the packaged server can be supplied to the build by using the `--path` argu
 [source, console]
 pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> myapp
 
-
- 
 |=========
 
+=== Installing custom features
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
+a| In CF Buildpacks, the Liberty for Java runtime includes a list of features that are available in Liberty. You can install features that aren't included in the runtime by running the `installUtility` command as a pre-runtime hook when the app is being pushed to IBM Cloud i.e. adding MicroProfile Config 3.0. 
+
+In the root directory of the app, create a `.profile.d` directory. In the `.profile.d` directory, create a script file that runs the `installUtility` command. 
+
+[source, console]
+----
+#!/bin/sh
+echo "Installing audit-1.0"
+export PATH=$PATH:$HOME/app/.java/jre/bin
+
+$HOME/app/.liberty/bin/installUtility install audit-1.0 --acceptLicense
+----
+a| **Using Custom Features:** Custom features can can either be configured on the server or using a volume mount to `/features` that contains the feature JARs and manifests along with a feature descriptor.
+
+**Feature Manifest:** The feature manifest is a `features.toml` file containing a list of `features` that would be installed on the server.
+
+A feature has the following properties:
+[disc]
+* asdf
+* asdf
+
+|=========
 
 
 === Using UBI images 
 
 === Installing iFixes 
 
-=== Installing customer features
+
 
 
 
