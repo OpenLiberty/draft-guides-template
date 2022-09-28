@@ -193,10 +193,72 @@ docker run --env SERVICE_BINDING_ROOT=/bindings --volume <absolute-path-to-bindi
 |=========
 |*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands* 
 
+a| The CF liberty-for-java buildpack allows for the following profiles to be used: javaee6, javaee7, javaee8. These profiles can be installed using the following cf commmand and environment variable: 
+
+[source, console]
+cf set-env myapp JBP_CONFIG_LIBERTY "app_archive: {features: [javaee8]}”
+
+a| The different profiles can be installed by using the _pack build --env_ command and including the BP_LIBERTY_PROFILE environment variable. For example, to include jakartaee9 profile, the following command will be run: 
+
+[source, console]
+pack build --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9
+
 
 
 |=========
-== Advanced migrations
+
+=== Building from a Liberty server 
+
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands* 
+
+a| In the CF buildpacks, providing a custom Liberty server configuration requires editing the `server.xml` file. Create a `apps` directory within the `defaultServer` directory i.e. `defaultServer/apps`. In that directory a `server.xml` file can be created and placed in `defaultServer` directory. 
+
+Once the server directory is ready the following command can be used to deploy to IBM Cloud
+
+[source, console]
+cf push <yourappname> -p defaultServer
+
+a| The buildpack can build from a Liberty server installation directory or from a packaged server. 
+
+To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
+
+[source, console]
+pack build --env BP_JAVA_APP_SERVER=liberty myapp
+
+|=========
+
+=== Building from a Packaged Server
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
+a| In CF buildpacks you can also push a packaged server to IBM Cloud by creating the file using Liberty's server package command. To package a Liberty server, use the `./bin/server package` command from the installed app directory. Specify the server name and include the `--include=usr` option. The CF command to package a Liberty server is the following: 
+
+[source, console]
+wlp/bin/server package server_name_here --include=usr
+
+This command generates a `serverName.zip` file in the server's directory and the following commmand pushes the zip file to IBM Cloud:
+
+[source, console]
+cf push <yourappname> -p wlp/usr/servers/defaultServer/defaultServer.zip
+
+a| Building from a Packaged Server: Use the `server package` command of the Liberty runtime to create a packaged server. Run the following command from Liberty installation's `wlp` directory:app-name:
+
+[source, console]
+bin/server package defaultServer --include=usr
+
+Then the packaged server can be supplied to the build by using the `--path` argument: 
+[source, console]
+pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> myapp
+
+
+ 
+|=========
+
+
 
 === Using UBI images 
 
@@ -204,8 +266,8 @@ docker run --env SERVICE_BINDING_ROOT=/bindings --volume <absolute-path-to-bindi
 
 === Installing customer features
 
-=== Building from a Liberty server 
 
-=== Building from a Packaged Server
+
+
 
 // ------------ END ------------
