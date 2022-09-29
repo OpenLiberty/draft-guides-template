@@ -279,8 +279,41 @@ a| **Using Custom Features:** Custom features can can either be configured on th
 
 A feature has the following properties:
 [disc]
-* asdf
-* asdf
+* `name`: Name of the feature to enable. Use symbolic name of the feature that you would use when enabling the feature in the `server.xml`
+* `uri`: URI of where to find the fetaure. The `file` scheme is the only supported scheme at the moment.
+* `version`: Version of the feature
+* `dependencies`: List of features that the custom feature depends on
+
+**Example Feature Manifest**: This example shows how to configure a feature called `dummyCache` that has a dependency `distributedMap-1.0` feature. Any additional features added will use the same format as the example below.
+
+First create the feature descriptor `features.toml` with the following content:
+[source, toml]
+----
+[[features]]
+  name = "dummyCache"
+  uri = "file://features/cache.dummy_1.0.0.jar"
+  version = "1.0.0"
+  dependencies = ["distributedMap-1.0"]
+----
+
+Using the above feature description, the Liberty buildpack will look for the feature JAR in the volume mounted on `/features` at the path `features/cache.dummy_1.0.0.jar`. The buildpack also assumes that the feature manifest file will be at the path `features/cache.dummy_1.0.0.mf`. 
+//***QUESTION*** here regarding the guide
+
+After creating the feature descriptor, tar and gzip the `feature.toml` and `features` directory so that it has the contents similar to the following: 
+
+[source, console]
+----
+$ tar tzf liberty-conf.tar.gz
+./
+./features/
+./features.toml
+./features/cache.dummy_1.0.0.mf
+./features/cache.dummy_1.0.0.jar
+----
+
+Then, the custom features can be provided to the build by mounting the feature directory to `/features`:
+[source, console]
+pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /Users/userNameHere/Development/paketo-buildpacks/liberty-e2e.bak/data/conf/features:/features myapp
 
 |=========
 
