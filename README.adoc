@@ -39,9 +39,11 @@ You will explore how to migrate an application using Cloud Foundry liberty-for-j
 
 Learn how to migrate an application using Cloud Foundry liberty-for-java buildpack to using Paketo buildpacks. You will learn how to migrate and use advanced features of the Paketo buildpack. 
 
+//If you're familiar with using the CF buildpacks to deploy an app
+
 The migration includes learning how to use the following features: 
 
-* Simple migration
+* Building with a simple `war`
 * Providing server.xml at build time 
 * Using different profiles (full, jakarta9, webProfile9, webProfile8, javaee8, microProfile4, microProfile5, kernel)
 * Building from a Liberty Server 
@@ -50,16 +52,34 @@ The migration includes learning how to use the following features:
 * Installing iFixes
 * Using UBI images 
 
-== Additional prerequisites
+== Getting Started
 
-* Your application source 
 * https://hub.docker.com/search?type=edition&offering=community&q=[Docker]
 * The https://buildpacks.io/docs/tools/pack/[pack CLI]
+* Your application source. In this guide the Open Liberty starter application will be used. Use the following commands to clone the repository if needed:app-name: 
+
+[source, console]
+git clone https://github.com/openliberty/guide-getting-started.git
+cd guide-getting-started/finish
  
-== Simple migration 
+== Building with a simple `war` 
 //start with getting started blog post
 //simple migration - push using a war file
 //paketo.io and buildpacks.io website as references
+**Walkthrough:**
+
+Previously when using Cloud Foundry, the `war` file was pushed using the `cf push` command. 
+
+For the Paketo Buildpacks command the process is different. After installing `Docker` and the `pack CLI`, you're ready to start building with a simple `war`. For the purpose of this tutorial, the Open Liberty starter application will be used. 
+
+When setting the default builder from the command in the table, you'll get the following output: 
+
+[source, console]
+Builder gcr.io/paketo-buildpacks/builder:base is now the default builder
+
+After execute the `pack build` command in the table and it will build the sample app with all of the indicated features and environments. The correct build output will give you the following message: `Successfully built image myapp`. Confirm that the features and different environment variables are present in the build. 
+
+To run your application locally you'll execute the `docker run` command in the table. After running the command, go to your browser and navigate to: `locahost:9080`. In this case it displays the sample Open Liberty sample app or whatever your application will look like. 
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -128,6 +148,26 @@ docker run --rm -p 9080:9080 myapp
 
 == Providing server.xml at build time
 
+**Walkthrough:**
+
+Previously when using Cloud Foundry, custom Liberty configurations are provided in the `cf push` command by installing the Liberty profile to your workstation and specifying the location in the command. 
+
+The Paketo Buildpacks commands requires the following steps: 
+
+The following server configuration files can be included in the application image: 
+
+* server.xml
+* server.env
+* bootstrap.properties
+
+**PLEASE NOTE:** Do not put any secrets in these configuration files! The files will be in cluded in the image and can leak your secrets. Refer to https://github.com/paketo-buildpacks/liberty#configuring-secrets[Configuring secrets] for more information on how to provide secrets in your configuration.
+
+In the case of this starter application, to provide server configuration in the `src/main/liberty/config` directory, set one of the following variables in your `pack build` command. The command will look like this: 
+
+`pack build app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_MAVEN_BUILT_ARTIFACT="target/*.[ejw]ar src/main/liberty/config/*"`
+
+If successful the following message will display in the output: `Successfully built image your_app_name_here`. And to run the app locally, use the same `docker run` command as the previous section.
+
 [width="100%", cols="10, 10"]
 [source, adoc]
 |=========
@@ -141,7 +181,7 @@ Run the command:
 [source, console]
 cf push <yourappname> -p wlp/usr/servers/defaultServer
 
-a| Using server.xml at build time:author:
+a| Using server.xml at build time:
 
 Run the following commands: 
 
@@ -184,9 +224,53 @@ docker run --env SERVICE_BINDING_ROOT=/bindings --volume <absolute-path-to-bindi
 |=========
 
 
-=== Using different profiles 
-//Offering different profiles javaee6, javaee7, javaee8
-* Full, jakarta9, webProfile9, webProfile8, javaee8, microProfile4, microProfile5, kernel
+== Using different profiles 
+**Walkthrough:**
+
+ In Cloud Foundry, different profiles are specified in the `cf push` command by setting the environment variables. 
+ 
+ Similarly in the Paketo buildpack command, you can provide different profiles in the `pack build` command as referenced in the table below. Valid profiles for Open Liberty include: 
+
+* full
+* kernel
+* jakartaee9
+* javaee8
+* webProfile8
+* webProfile9
+* microProfile4
+* microProfile5
+
+Valid profiles for WebSphere Liberty are: 
+
+* kernel
+* jakartaee9
+* javaee8
+* javaee7
+* webProfile7
+* webProfile8
+* webProfile9
+
+Follow the instructions in the **_Building with Simple war_** section by setting the default builder, build your application, and run it locally with the `docker run` command. For example, if you want to include jakartaee9 profile, the following command will be run: 
+
+`pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9`
+
+Make sure to check the console to ensure the correct profile was installed. Check the _Build Configuration_ section for a list of environment variables installed. For the `jakartaee9` profile the following can be found in the logs: 
+
+[source, console]
+----
+[builder]   Build Configuration:
+[builder]     $BP_JAVA_APP_SERVER       liberty     the application server to use
+[builder]     $BP_LIBERTY_FEATURES                  A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  ol          Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE       jakartaee9  The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME               Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *           Which version of the Liberty runtime to install
+[builder]   Open Liberty (Jakarta EE9) 22.0.9: Contributing to layer
+[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-jakartaee9/22.0.0.9/openliberty-jakartaee9-22.0.0.9.zip
+[builder]     Verifying checksum
+[builder]     Expanding to /layers/paketo-buildpacks_liberty/open-liberty-runtime-jakartaee9
+[builder]     Installing features...
+----
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -207,7 +291,19 @@ pack build --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9
 
 |=========
 
-=== Building from a Liberty server 
+== Building from a Liberty server 
+
+**Walkthrough:**
+
+When using CF Buildpack, a custom Liberty server can be provided by editing the `server.xml` file and placing that file by creating an `apps` directory within the `defaultServer` directory and then you can use the `cf push <yourappname> -p defaultServer`.
+
+When using Paketo Buildpacks, the buildpack can build from a Liberty server installation directory by using the `server package` command. 
+
+To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: `pack build --env BP_JAVA_APP_SERVER=liberty myapp`
+
+In the console you will get the following output:
+//include more information here
+
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -221,7 +317,7 @@ Once the server directory is ready the following command can be used to deploy t
 [source, console]
 cf push <yourappname> -p defaultServer
 
-a| The buildpack can build from a Liberty server installation directory or from a packaged server. 
+a| The buildpack can build from a Liberty server installation directory or from a packaged server that was created using the `server package` command. More information regarding the command can be found https://openliberty.io/docs/latest/reference/command/server-package.html[here].
 
 To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
 
@@ -230,7 +326,10 @@ pack build --env BP_JAVA_APP_SERVER=liberty myapp
 
 |=========
 
-=== Building from a Packaged Server
+== Building from a Packaged Server
+
+**Walkthrough:**
+
 [width="100%", cols="10, 10"]
 [source, adoc]
 |=========
@@ -256,23 +355,26 @@ pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> my
 
 |=========
 
-=== Installing custom features
+== Installing custom features
+
 [width="100%", cols="10, 10"]
 [source, adoc]
 |=========
 |*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
 a| In CF Buildpacks, the Liberty for Java runtime includes a list of features that are available in Liberty. You can install features that aren't included in the runtime by running the `installUtility` command as a pre-runtime hook when the app is being pushed to IBM Cloud i.e. adding MicroProfile Config 3.0. 
 
-In the root directory of the app, create a `.profile.d` directory. In the `.profile.d` directory, create a script file that runs the `installUtility` command. 
+1. In the root directory of the app, create a `.profile.d` directory. Use the `.profile.d` feature to copy the manifest and feature jar to the user feature path and user bundle path
 
-[source, console]
-----
-#!/bin/sh
-echo "Installing audit-1.0"
-export PATH=$PATH:$HOME/app/.java/jre/bin
+2. Modify the `server.xml` to enable the user feature
 
-$HOME/app/.liberty/bin/installUtility install audit-1.0 --acceptLicense
-----
+// [source, console]
+// ----
+// #!/bin/sh
+// echo "Installing audit-1.0"
+// export PATH=$PATH:$HOME/app/.java/jre/bin
+
+// $HOME/app/.liberty/bin/installUtility install audit-1.0 --acceptLicense
+// ----
 a| **Using Custom Features:** Custom features can can either be configured on the server or using a volume mount to `/features` that contains the feature JARs and manifests along with a feature descriptor.
 
 **Feature Manifest:** The feature manifest is a `features.toml` file containing a list of `features` that would be installed on the server.
@@ -317,10 +419,144 @@ pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /Users/userNam
 
 |=========
 
+== Installing iFixes 
 
-=== Using UBI images 
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
 
-=== Installing iFixes 
+a| **Applying iFix to the Liberty runtime**:
+
+An iFix can be applied to an app using the `.profile.d` feature.
+
+* Create the `.profile.d/.ifixes` directory in the root of the app that's being deployed to IBM Cloud
+* Place the iFix `.jar` file in the `.profile.d/.ifixes/` directory
+* Create `ifix.sh` file in the `.profile.d` directory with the following contents (update the <ifix filename> accordingly)
+* If the iFix file can celany apply against the IBM Cloud version of Liberty, use the following script: 
+
+[source, console]
+#!/bin/sh
+echo "Applying iFixes"
+$HOME/.java/jre/bin/java -jar $HOME/.profile.d/.ifixes/<ifix filename>.jar --installLocation $HOME/.liberty/
+
+* If the iFix file cannot cleanly apply, use the following script: 
+
+[source, console]
+#!/bin/sh
+echo "Applying iFixes"
+unzip $HOME/.profile.d/.ifixes/<ifix filename>.jar lib/*.jar -d $HOME/.liberty
+
+For example, the contents of the `.profile.d` directory should look like the following: 
+
+[source, console]
+.profile.d/
+.profile.d/.ifixes/16003-wlp-archive-IFPI68805.jar
+.profile.d/ifix.sh
+
+Once you deploy your application, you should see the following message that indicates which iFixes were applied:
+
+[source, console]
+CWWKF0015I: The server has the following interim fixes active in the runtime: PIXXXXX. For a full listing of installed fixes run: productInfo version --ifixes
+
+a| **How to apply an iFix to the Liberty runtime**
+
+An iFix can be applied to the liberty runtime using a volume mount. 
+
+There are the following requirements to install iFixes: 
+
+* Only the archive versions of Liberty iFixes are supported 
+* The iFixes are in a directory named `ifixes`
+
+For example the contents of the `ifixes` directory should look like the following:
+
+[source, console]
+ifixes/
+ifixes/220002-wlp-archive-ifph12345.jar
+ifixes/220002-wlp-archive-ifph67890.jar
+
+Specify the `--volume` parameter mapping your local `ifixes/` directory to `/ifixes` in the container
+
+[source, console]
+pack build myapp --env BP_JAVA_APP_SERVER=liberty --volume /path/to/ifixes:/ifixes
+
+The build output will show the iFix being applied: 
+
+[source, console]
+[builder]   Open Liberty (All Features) 22.0.3: Contributing to layer
+[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.3/openliberty-runtime-22.0.0.3.zip
+[builder]     Verifying checksum
+[builder]     Expanding to /layers/paketo-buildpacks_liberty/open-liberty-runtime-full
+[builder]     Installing iFix 22003-wlp-archive-ifph44666.jar
+[builder]       Applying fix to Liberty install directory at /layers/paketo-buildpacks_liberty/open-liberty-runtime-full now.
+[builder]       	lib/com.ibm.ws.openapi.ui.private_1.0.62.cl220320220308-1516.jar
+[builder]       	lib/com.ibm.ws.openapi.ui_1.0.62.cl220320220308-1516.jar
+[builder]       	lib/com.ibm.ws.microprofile.openapi.ui_1.0.62.cl220320220308-1516.jar
+[builder]       Fix has been applied successfully.
+[builder]       Successfully extracted all product files.
+|=========
+
+== Using UBI images 
+[width="100%", cols="10, 10"]
+[source, adoc]
+|=========
+|*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
+a| Push a Docker Image from a Registry:
+
+Cloud Foundry supports pushign apps from container registries such as Docker Hub, Google Container Registry (GCR), and Amazon Elastic Container Registry (ECR).
+
+How you run `cf push` with apps stored in container
+
+[source, console]
+cf push APP-NAME --docker-image REPO/IMAGE:TAG
+
+More reference information on pushing an app in CF using a docker image can be found here: https://docs.cloudfoundry.org/devguide/deploy-apps/push-docker.html[Deploying an App with Docker]
+
+a| Using a Liberty Runtime Provided in the Stack Run Image
+
+**Creating the Stack Image:**
+
+Create the following script: 
+
+[source, console]
+#!/usr/bin/env bash
+main() {
+  readonly LIBERTY_USR_DIRS=(
+    "/workspace/wlp/usr"
+    "/workspace/usr"
+    "/layers/paketo-buildpacks_liberty/base/wlp/usr"
+  )
+  for liberty_usr_dir in "${LIBERTY_USR_DIRS[@]}"; do
+    if [[ -d "${liberty_usr_dir}" ]]; then
+      local usr_dir="${liberty_usr_dir}"
+      break
+    fi
+  done
+  cp -rf "${usr_dir}/." "${BPI_LIBERTY_RUNTIME_ROOT}/usr/"
+  # Call Liberty runtime's bootstrap script
+  docker-server.sh "${@}"
+}
+main "${@}"
+
+**Building the stack images:**
+
+After preparing the `Dockerfile` for the stack, use the following commands to build the run and build images that will be used: 
+
+[source, console]
+docker build -t <image-name>-run:latest --target run .
+docker build -t <image-name>-build:latest --target build .
+
+Replace `<image-name` with whatever image name you would like to use.
+
+**Deploying a Liberty application:**
+
+Use the following command with custom stack images and builder specified:
+
+[source, console]
+$ pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
+
+|=========
+
 
 
 
