@@ -54,9 +54,11 @@ The migration includes learning how to use the following features:
 
 == Getting Started
 
+The following are the prerequisites needed to go through the migration guide. 
+
 * https://hub.docker.com/search?type=edition&offering=community&q=[Docker]
 * The https://buildpacks.io/docs/tools/pack/[pack CLI]
-* Your application source. In this guide the Open Liberty starter application will be used. Use the following commands to clone the repository if needed:app-name: 
+* Your application source. In this guide the Open Liberty starter application will be used to demonstrate each of the features. Use the following commands to clone the repository and download the Open Liberty starter application: 
 
 [source, console]
 git clone https://github.com/openliberty/guide-getting-started.git
@@ -70,16 +72,50 @@ cd guide-getting-started/finish
 
 Previously when using Cloud Foundry, the `war` file was pushed using the `cf push` command. 
 
-For the Paketo Buildpacks command the process is different. After installing `Docker` and the `pack CLI`, you're ready to start building with a simple `war`. For the purpose of this tutorial, the Open Liberty starter application will be used. 
+For the Paketo Buildpacks command the process is different. After installing `Docker` and the `pack CLI` in the Getting Started section, you are ready to start building with a simple `war` file. For the purpose of this tutorial, the Open Liberty starter application will be used. 
 
-When setting the default builder from the command in the table, you'll get the following output: 
+[source, console]
+git clone https://github.com/openliberty/guide-getting-started.git
+cd guide-getting-started/finish
+
+When setting the default builder, the following `pack config` command will be used: 
+
+`pack config default-builder gcr.io/paketo-buildpacks/builder:base`. 
+
+After running the `pack config` command you will get the following output: 
 
 [source, console]
 Builder gcr.io/paketo-buildpacks/builder:base is now the default builder
 
-After execute the `pack build` command in the table and it will build the sample app with all of the indicated features and environments. The correct build output will give you the following message: `Successfully built image myapp`. Confirm that the features and different environment variables are present in the build. 
 
-To run your application locally you'll execute the `docker run` command in the table. After running the command, go to your browser and navigate to: `locahost:9080`. In this case it displays the sample Open Liberty sample app or whatever your application will look like. 
+After this command, you can execute the `pack build` command:
+
+`pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty`
+
+It will build the sample app with all of the indicated features and environments. Confirm that the features and different environment variables are present in the build. A sample output of the `pack build` command will be the following: 
+
+[source, console]
+----
+[builder]   Build Configuration:
+[builder]     $BP_JAVA_APP_SERVER       liberty  the application server to use
+[builder]     $BP_LIBERTY_FEATURES               A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  ol       Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE                The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME            Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *        Which version of the Liberty runtime to install
+...
+Successfully built image myapp
+----
+
+The correct build output from the `pack build` command will give you the following message at the end of: `Successfully built image myapp`. Also by checking the `Build Configuration` section of the output you can confirm if the features and environment variables defined in the `pack build` command was installed.
+
+After running and verifying the output of the `pack build` command, to run your application locally you'll execute the following `docker run` command: 
+
+`docker run --rm -p 9080:9080 your_app_name_here`
+
+After running the command, go to your browser and navigate to: `locahost:9080`. In this case it displays the sample Open Liberty sample app or whatever your application will look like. For this sample app the following message will display: "Congrats on your shiny, new Open Liberty sample app!".
+
+Refer to the table below for more information regarding the commands and the comparison between the Cloud Foundry buildpack commands versus the Paketo Buildpack commands.
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -129,7 +165,7 @@ pack config default-builder gcr.io/paketo-buildpacks/builder:base
 
 The pack build command uses Cloud Native Buildpacks to create an app image from the source code. More info found here: https://buildpacks.io/docs/tools/pack/cli/pack_build/[pack build] 
 [source, console]
-pack build --env BP_JAVA_APP_SERVER=liberty 
+pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty 
 // --env BP_LIBERTY_PROFILE=jakartaee9 \
 //   --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp
 
@@ -162,11 +198,21 @@ The following server configuration files can be included in the application imag
 
 **PLEASE NOTE:** Do not put any secrets in these configuration files! The files will be in cluded in the image and can leak your secrets. Refer to https://github.com/paketo-buildpacks/liberty#configuring-secrets[Configuring secrets] for more information on how to provide secrets in your configuration.
 
-In the case of this starter application, to provide server configuration in the `src/main/liberty/config` directory, set one of the following variables in your `pack build` command. The command will look like this: 
+In the case of this starter application, to provide server configuration in the `src/main/liberty/config` directory, set one of the following variables in your `pack build` command. These files can only be included in the build by telling the Maven or Gradle buildpacks to provide them. If the Server configuration is provided with Maven applications then the command will look like this: 
 
 `pack build app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_MAVEN_BUILT_ARTIFACT="target/*.[ejw]ar src/main/liberty/config/*"`
 
-If successful the following message will display in the output: `Successfully built image your_app_name_here`. And to run the app locally, use the same `docker run` command as the previous section.
+If the server configuration is provided with Gradle applications the command will be the following: 
+
+`pack build app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_GRADLE_BUILT_ARTIFACT="build/libs/*.[ejw]ar src/main/liberty/config/*"`
+
+If successful the following message will display in the output: `Successfully built image your_app_name_here`. 
+
+And to run the app locally, use the same `docker run` command as the previous section:
+
+`docker run --rm -p 9080:9080 myapp`
+
+Further background information can be found in the table below.
 
 [width="100%", cols="10, 10"]
 [source, adoc]
