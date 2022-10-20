@@ -409,9 +409,36 @@ When using CF Buildpack, a custom Liberty server can be provided by editing the 
 
 When using Paketo Buildpacks, the buildpack can build from a Liberty server installation directory by using the `server package` command. 
 
-To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: `pack build --env BP_JAVA_APP_SERVER=liberty myapp`
+To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
 
-In the console you will get the following output:
+`pack build myapp --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`
+
+The build output will be similar to the previous section with the **liberty** server indicated in the BP_JAVA_APP_SERVER option: 
+
+[source, console]
+----
+[builder] Paketo Buildpack for Liberty 2.2.0
+[builder]   https://github.com/paketo-buildpacks/liberty
+[builder]   Build Configuration:
+[builder]     $BP_JAVA_APP_SERVER       liberty     the application server to use
+[builder]     $BP_LIBERTY_FEATURES                  A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  ol          Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE       jakartaee9  The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME               Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *           Which version of the Liberty runtime to install
+[builder]   Launch Configuration:
+[builder]     $BPL_LIBERTY_LOG_LEVEL                Sets the logging level
+[builder]     $BP_LIBERTY_CONTEXT_ROOT              Context root to use for app
+[builder]     $BP_LIBERTY_SERVER_NAME               Name of the server to use
+[builder]   Launch Helper: Reusing cached layer
+[builder]   Open Liberty Config: Contributing to layer
+[builder] Reminder: Do not include secrets in server.xml; this file has been included in the image and that can leak your secrets
+[builder]     Writing env.launch/BPI_LIBERTY_SERVER_NAME.default
+[builder]     Writing env.launch/WLP_USER_DIR.default
+[builder]   Open Liberty (Jakarta EE9) 22.0.9: Reusing cached layer
+[builder]   Process types:
+[builder]     open-liberty-runtime: server run defaultServer (direct)
+----
 //include more information here
 
 
@@ -432,7 +459,7 @@ a| The buildpack can build from a Liberty server installation directory or from 
 To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
 
 [source, console]
-pack build --env BP_JAVA_APP_SERVER=liberty myapp
+`pack build myapp --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`
 
 |=========
 
