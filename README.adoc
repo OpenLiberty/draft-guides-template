@@ -407,39 +407,35 @@ pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_
 
 When using CF Buildpack, a custom Liberty server can be provided by editing the `server.xml` file and placing that file by creating an `apps` directory within the `defaultServer` directory and then you can use the `cf push <yourappname> -p defaultServer`.
 
-When using Paketo Buildpacks, the buildpack can build from a Liberty server installation directory by using the `server package` command. 
+When using Paketo Buildpacks, the buildpack can build from a Liberty server installation directory. Then execute the following initial set-up steps including: installing a Liberty server from https://openliberty.io/start/[Open Liberty], creating and starting the server using the `server` command, and updating the `server.xml` and `.war` file. 
 
-To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
+After the initial setup of the Liberty server, build from a Liberty server installation by changing your working directory to the installation root containing the `wlp` directory and running the following command: 
 
-`pack build myapp --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`
+`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp --env BP_LIBERTY_SERVER_NAME=server_name_here`
 
 The build output will be similar to the previous section with the **liberty** server indicated in the BP_JAVA_APP_SERVER option: 
 
 [source, console]
 ----
+...
 [builder] Paketo Buildpack for Liberty 2.2.0
 [builder]   https://github.com/paketo-buildpacks/liberty
 [builder]   Build Configuration:
-[builder]     $BP_JAVA_APP_SERVER       liberty     the application server to use
-[builder]     $BP_LIBERTY_FEATURES                  A space separated list of liberty features to install.
-[builder]     $BP_LIBERTY_INSTALL_TYPE  ol          Install type of Liberty
-[builder]     $BP_LIBERTY_PROFILE       jakartaee9  The Liberty profile to install
-[builder]     $BP_LIBERTY_SERVER_NAME               Name of the server to use
-[builder]     $BP_LIBERTY_VERSION       *           Which version of the Liberty runtime to install
+[builder]     $BP_JAVA_APP_SERVER       liberty  the application server to use
+[builder]     $BP_LIBERTY_FEATURES               A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  ol       Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE                The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME   server1  Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *        Which version of the Liberty runtime to install
 [builder]   Launch Configuration:
-[builder]     $BPL_LIBERTY_LOG_LEVEL                Sets the logging level
-[builder]     $BP_LIBERTY_CONTEXT_ROOT              Context root to use for app
-[builder]     $BP_LIBERTY_SERVER_NAME               Name of the server to use
-[builder]   Launch Helper: Reusing cached layer
-[builder]   Open Liberty Config: Contributing to layer
-[builder] Reminder: Do not include secrets in server.xml; this file has been included in the image and that can leak your secrets
-[builder]     Writing env.launch/BPI_LIBERTY_SERVER_NAME.default
-[builder]     Writing env.launch/WLP_USER_DIR.default
-[builder]   Open Liberty (Jakarta EE9) 22.0.9: Reusing cached layer
-[builder]   Process types:
-[builder]     open-liberty-runtime: server run defaultServer (direct)
+[builder]     $BPL_LIBERTY_LOG_LEVEL             Sets the logging level
+[builder]     $BP_LIBERTY_CONTEXT_ROOT           Context root to use for app
+[builder]     $BP_LIBERTY_SERVER_NAME   server1  Name of the server to use
+...
+Successfully built image sampleapp
 ----
-//include more information here
+
+To verify the successful build check that the `$BP_LIBERTY_SERVER_NAME` and `$$BP_JAVA_APP_SERVER` are matches your `pack build` command. A successful build will also contain the following message: "Successfully built image sampleapp".
 
 
 [width="100%", cols="10, 10"]
@@ -459,13 +455,61 @@ a| The buildpack can build from a Liberty server installation directory or from 
 To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
 
 [source, console]
-`pack build myapp --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`
+`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp --env BP_LIBERTY_SERVER_NAME=server_name_here`
 
 |=========
 
 == Building from a Packaged Server
 
 **Walkthrough:**
+
+When using Cloud Foundry Buildpacks the `./bin/server package` was used to generate a packaged server. 
+
+When using Paketo Buildpacks, the process of creating a packaged server is very similar. Use the following `server package` command from the Liberty installation's directory to create a packaged server:
+
+`bin/server package defaultServer --include=usr`
+
+The output of the command will look like this: 
+
+[source console]
+----
+Packaging server server1.
+Server server1 package complete in directory-for-server-zip
+----
+
+The packaged server can then be supplied to the build by specifying it in the `--path` argument:
+
+`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path usr/servers/server1/server1.zip sampleapp2`
+
+The following will be the build output: 
+
+[source, console]
+----
+...
+[builder] Paketo Buildpack for Liberty 2.2.0
+[builder]   https://github.com/paketo-buildpacks/liberty
+[builder]   Build Configuration:
+[builder]     $BP_JAVA_APP_SERVER       liberty  the application server to use
+[builder]     $BP_LIBERTY_FEATURES               A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  ol       Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE                The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME            Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *        Which version of the Liberty runtime to install
+[builder]   Launch Configuration:
+[builder]     $BPL_LIBERTY_LOG_LEVEL             Sets the logging level
+[builder]     $BP_LIBERTY_CONTEXT_ROOT           Context root to use for app
+[builder]     $BP_LIBERTY_SERVER_NAME            Name of the server to use
+[builder] Warning: The default profile for Open Liberty will change from 'full' to 'kernel' after 2022-11-01. To continue using the full profile, build with the argument '--env BP_LIBERTY_PROFILE=full'
+[builder]   Launch Helper: Contributing to layer
+[builder]     Creating /layers/paketo-buildpacks_liberty/helper/exec.d/linker
+[builder]   Open Liberty Config: Contributing to layer
+[builder]     Writing env.launch/BPI_LIBERTY_SERVER_NAME.default
+[builder]     Writing env.launch/WLP_USER_DIR.default
+[builder]   Open Liberty (All Features) 22.0.9: Contributing to layer
+[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.9/openliberty-runtime-22.0.0.9.zip
+...
+----
+
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -493,6 +537,8 @@ pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> my
 |=========
 
 == Installing custom features
+
+**Walkthrough:**
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -557,6 +603,8 @@ pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /Users/userNam
 |=========
 
 == Installing iFixes 
+
+**Walkthrough:**
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -634,6 +682,9 @@ The build output will show the iFix being applied:
 |=========
 
 == Using UBI images 
+
+**Walkthrough:**
+
 [width="100%", cols="10, 10"]
 [source, adoc]
 |=========
