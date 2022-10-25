@@ -58,8 +58,11 @@ The following are the prerequisites needed to go through this migration guide.
 
 * https://hub.docker.com/search?type=edition&offering=community&q=[Docker]
 * The https://buildpacks.io/docs/tools/pack/[pack CLI]
+* If you're new to buildpacks, I recommend you set a default builder as this removes the need to set a builder each time you build an image: 
+`pack config default-builder gcr.io/paketo-buildpacks/builder:base`
 * JDK 
 * Your application source. In this guide the Open Liberty starter application will be used to demonstrate each of the features. Use the following commands to clone the repository and download the Open Liberty starter application: 
+
 
 [source, console]
 git clone https://github.com/openliberty/guide-getting-started.git
@@ -75,7 +78,8 @@ Previously when using Cloud Foundry, the `war` file was pushed using the `cf pus
 
 For the Paketo Buildpacks command the process is different. After installing `Docker`, `pack CLI`, and JDK in the Getting Started section, you are ready to start building with a simple `war` file. For the purpose of this tutorial, the Open Liberty starter application will be used.
 
-You are now ready to build the application. For this starter app, navigate to either the `finish` or `start` directory. To generate a `.war` file run the following command: `mvn install` in the app's `finish` or `start` directory. It will generate a `guide-getting-started.war` file in the `/finish/target` directory.
+//indicate just finish directory 
+You are now ready to build the application. For this starter app, navigate to either the `finish` or `start` directory. To generate a `.war` file run the following command: `mvn install` in the app's `finish` directory. It will generate a `guide-getting-started.war` file in the `target` directory.
 
 Once the `.war` file is generated, you can set the default builder, the following `pack config` command will be used: 
 
@@ -86,9 +90,10 @@ After running the `pack config` command you will get the following output:
 [source, console]
 Builder gcr.io/paketo-buildpacks/builder:base is now the default builder
 
-After this command, you can execute the `pack build` command. Make sure to include the `--path` to where the `.war` file was installed and include the `--buildpack` option to specify the paketo buildpack like so `--buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`. The complete `pack build` command will be the following:
+After this command, you can execute the `pack build` command. Make sure to include the `--path` to where the `.war` file was installed and include the `--buildpack` option the build uses the OpenJ9 `--buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`. The complete `pack build` command will be the following:
+//openj9 JRE
 
-`pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path target/guide-getting-started.war`
+`pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path target/guide-getting-started.war`
 
 It will build the sample app with all of the indicated features and environments. Confirm that the features and different environment variables are present in the build. After running command verify that the paketo-buildpacks are being used in the DETECTING section. Then ensure that the correct "Build Configuration" is being used. A sample output of the `pack build` command will be the following: 
 
@@ -193,11 +198,12 @@ a| Push app using cloud foundry
 cf push -p myApp.war
 
 a| Create an OCI image and run application locally
-//Say something about the pack config command what it does
 
-The pack config command sets the default builder using the pack CLI.
-[source, console]
-pack config default-builder gcr.io/paketo-buildpacks/builder:base
+//Only have to do the `pack config` command once.
+
+// The pack config command sets the default builder using the pack CLI.
+// [source, console]
+// pack config default-builder gcr.io/paketo-buildpacks/builder:base
 
 The pack build command uses Cloud Native Buildpacks to create an app image from the source code. More info found here: https://buildpacks.io/docs/tools/pack/cli/pack_build/[pack build] 
 [source, console]
@@ -357,7 +363,7 @@ Valid profiles for WebSphere Liberty are:
 
 Follow the instructions in the **_Building with Simple war_** section by setting the default builder, running the `mvn clean` and `mvn install` commands, `pack build` command, and run it locally with the `docker run` command. For example, if you want to include jakartaee9 profile, the following command will be run: 
 
-`pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`
+`pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`
 
 Make sure to check the console to ensure the correct profile was installed. Check the _Build Configuration_ section for a list of environment variables installed. For the `jakartaee9` profile the following can be found in the logs under the Build Configuration steps for **Paketo Buildpack for Liberty 2.2.0**: 
 
@@ -380,7 +386,7 @@ Make sure to check the console to ensure the correct profile was installed. Chec
 ...
 ----
 
-Any profiles can be added to the `pack build` command with the `--env BP_LIBERTY_PROFILE` option. And to check the app is running execute the following command: `docker run --rm -p 9080:9080 myapp`
+Any profiles can be added to the `pack build` command with the `--env BP_LIBERTY_PROFILE` option.
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -395,8 +401,7 @@ cf set-env myapp JBP_CONFIG_LIBERTY "app_archive: {features: [javaee8]}”
 a| The different profiles can be installed by using the _pack build --env_ command and including the BP_LIBERTY_PROFILE environment variable. For example, to include jakartaee9 profile, the following command will be run: 
 
 [source, console]
-pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 --env BP_MAVEN_BUILT_ARTIFACT="target/*.war src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java
-
+pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java
 
 
 |=========
@@ -405,15 +410,19 @@ pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_
 
 **Walkthrough:**
 
-When using CF Buildpack, a custom Liberty server can be provided by editing the `server.xml` file and placing that file by creating an `apps` directory within the `defaultServer` directory and then you can use the `cf push <yourappname> -p defaultServer`.
+//the buildpack can push
+When using the CF Buildpack, the buildpack can push a custom Liberty server configuration using the `cf push` command.
 
-When using Paketo Buildpacks, the buildpack can build from a Liberty server installation directory. Then execute the following initial set-up steps including: installing a Liberty server from https://openliberty.io/start/[Open Liberty], creating and starting the server using the `server` command, and updating the `server.xml` and `.war` file. 
+When using Paketo Buildpacks, the buildpack can build from an existing Liberty server installation directory. 
+// Then execute the following initial set-up steps including: installing a Liberty server from https://openliberty.io/start/[Open Liberty], creating and starting the server using the `server` command, and updating the `server.xml` and `.war` file. 
 
 After the initial setup of the Liberty server, build from a Liberty server installation by changing your working directory to the installation root containing the `wlp` directory and running the following command: 
 
-`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp --env BP_LIBERTY_SERVER_NAME=server_name_here`
+`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp`
 
 The build output will be similar to the previous section with the **liberty** server indicated in the BP_JAVA_APP_SERVER option: 
+
+//modify build output.
 
 [source, console]
 ----
@@ -435,7 +444,7 @@ The build output will be similar to the previous section with the **liberty** se
 Successfully built image sampleapp
 ----
 
-To verify the successful build check that the `$BP_LIBERTY_SERVER_NAME` and `$$BP_JAVA_APP_SERVER` are matches your `pack build` command. A successful build will also contain the following message: "Successfully built image sampleapp".
+A successful build will also contain the following message: "Successfully built image sampleapp".
 
 
 [width="100%", cols="10, 10"]
@@ -455,7 +464,7 @@ a| The buildpack can build from a Liberty server installation directory or from 
 To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
 
 [source, console]
-`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp --env BP_LIBERTY_SERVER_NAME=server_name_here`
+`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp`
 
 |=========
 
@@ -465,21 +474,23 @@ To build from a Liberty server installation, change your working directory to th
 
 When using Cloud Foundry Buildpacks the `./bin/server package` was used to generate a packaged server. 
 
-When using Paketo Buildpacks, the process of creating a packaged server is very similar. Use the following `server package` command from the Liberty installation's directory to create a packaged server:
+When using Paketo Buildpacks, the process of creating a packaged server is the same. Use the following `server package` command from the Liberty installation's directory to create a packaged server:
 
-`bin/server package defaultServer --include=usr`
+`bin/server package your-app-server-name --include=usr`
 
 The output of the command will look like this: 
 
 [source console]
 ----
 Packaging server server1.
-Server server1 package complete in directory-for-server-zip
+Server your-app-server-name package complete in directory-for-server-zip
 ----
 
 The packaged server can then be supplied to the build by specifying it in the `--path` argument:
 
-`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path usr/servers/server1/server1.zip sampleapp2`
+`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path usr/servers/your-app-server-name/your-app-server-name.zip sampleapp2`
+
+// `pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path usr/servers/server1/server1.zip sampleapp2`
 
 The following will be the build output: 
 
@@ -515,7 +526,7 @@ The following will be the build output:
 [source, adoc]
 |=========
 |*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
-a| In CF buildpacks you can also push a packaged server to IBM Cloud by creating the file using Liberty's server package command. To package a Liberty server, use the `./bin/server package` command from the installed app directory. Specify the server name and include the `--include=usr` option. The CF command to package a Liberty server is the following: 
+a| In CF buildpacks you can also push a packaged server to IBM Cloud by creating the file using Liberty's server package command. To package a Liberty server, use the `./bin/server package` command from the installed app directory. Specify the server name and include the `--include=usr` option. The Liberty command to package a Liberty server is the following: 
 
 [source, console]
 wlp/bin/server package server_name_here --include=usr
@@ -523,7 +534,7 @@ wlp/bin/server package server_name_here --include=usr
 This command generates a `serverName.zip` file in the server's directory and the following commmand pushes the zip file to IBM Cloud:
 
 [source, console]
-cf push <yourappname> -p wlp/usr/servers/defaultServer/defaultServer.zip
+cf push <yourappname> -p wlp/usr/servers/defaultServer/serverName.zip
 
 a| Building from a Packaged Server: Use the `server package` command of the Liberty runtime to create a packaged server. Run the following command from Liberty installation's `wlp` directory:app-name:
 
@@ -684,6 +695,8 @@ The build output will show the iFix being applied:
 == Using UBI images 
 
 **Walkthrough:**
+//Run through the commands and show what the output looks like
+//Setup insturctions first and then the "Building the Stack Images" and include output
 
 [width="100%", cols="10, 10"]
 [source, adoc]
