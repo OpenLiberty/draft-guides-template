@@ -551,6 +551,75 @@ pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> my
 
 **Walkthrough:**
 
+//Include brief summary of CF Buildpacks installing custom features
+
+In Paketo Buildpacks, custom features can be configured on the server as well as using a volume mount to the `/features` directory that contains the feature JARs, manifests, and feature descriptor. 
+
+The feature manifest is a `features.toml` file containing a list of features that would be installed on the server.
+
+A feature has the following properties:
+[disc]
+* `name`: Name of the feature to enable. Use symbolic name of the feature that you would use when enabling the feature in the `server.xml`
+* `uri`: URI of where to find the fetaure. The `file` scheme is the only supported scheme at the moment.
+* `version`: Version of the feature
+* `dependencies`: List of features that the custom feature depends on
+
+For this walkthrough, an example feature, `jar`, and `.mf` file will be used. 
+
+First create the feature descriptor with the following content: 
+
+[source, console]
+----
+[[features]]
+  name = "dummyCache"
+  uri = "file://features/cache.dummy_1.0.0.jar"
+  version = "1.0.0"
+  dependencies = ["distributedMap-1.0"]
+----
+
+Then in the `features` directory, include the `features.toml`, `cache.dummy_1.0.0.mf`, and `cache.dummy_1.0.0.jar` and gzip the entire directory like so: 
+
+[source, console]
+$ tar tzf liberty-conf.tar.gz
+./
+./features/
+./features.toml
+./features/cache.dummy_1.0.0.mf
+./features/cache.dummy_1.0.0.jar
+
+The custom features can then be used in the build in the following command by mounting the feature directory to `/features`.
+
+`pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /features-file-path paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp`
+
+The expected output will be the following: 
+
+[source, console]
+----
+...
+[builder] Paketo Buildpack for Liberty 2.2.0
+[builder]   https://github.com/paketo-buildpacks/liberty
+[builder]   Build Configuration:
+[builder]     $BP_JAVA_APP_SERVER       liberty  the application server to use
+[builder]     $BP_LIBERTY_FEATURES               A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  ol       Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE                The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME            Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *        Which version of the Liberty runtime to install
+[builder]   Launch Configuration:
+[builder]     $BPL_LIBERTY_LOG_LEVEL             Sets the logging level
+[builder]     $BP_LIBERTY_CONTEXT_ROOT           Context root to use for app
+[builder]     $BP_LIBERTY_SERVER_NAME            Name of the server to use
+[builder] Warning: The default profile for Open Liberty will change from 'full' to 'kernel' after 2022-11-01. To continue using the full profile, build with the argument '--env BP_LIBERTY_PROFILE=full'
+[builder]   Launch Helper: Contributing to layer
+[builder]     Creating /layers/paketo-buildpacks_liberty/helper/exec.d/linker
+[builder]   Open Liberty Config: Contributing to layer
+[builder]     Writing env.launch/BPI_LIBERTY_SERVER_NAME.default
+[builder]     Writing env.launch/WLP_USER_DIR.default
+[builder]   Open Liberty (All Features) 22.0.9: Contributing to layer
+[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.9/openliberty-runtime-22.0.0.9.zip
+...
+----
+
 [width="100%", cols="10, 10"]
 [source, adoc]
 |=========
@@ -616,6 +685,41 @@ pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /Users/userNam
 == Installing iFixes 
 
 **Walkthrough:**
+
+An iFix can be applied to the liberty runtime using a volume mount. 
+
+There are the following requirements to install iFixes: 
+
+* Only the archive versions of Liberty iFixes are supported 
+* The iFixes are in a directory named `ifixes`
+
+For example the contents of the `ifixes` directory should look like the following:
+
+[source, console]
+ifixes/
+ifixes/220002-wlp-archive-ifph12345.jar
+ifixes/220002-wlp-archive-ifph67890.jar
+
+Specify the `--volume` parameter mapping your local `ifixes/` directory to `/ifixes` in the container
+
+[source, console]
+pack build myapp --env BP_JAVA_APP_SERVER=liberty --volume /path/to/ifixes:/ifixes
+
+The build output will show the iFix being applied: 
+
+[source, console]
+[builder]   Open Liberty (All Features) 22.0.3: Contributing to layer
+[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.3/openliberty-runtime-22.0.0.3.zip
+[builder]     Verifying checksum
+[builder]     Expanding to /layers/paketo-buildpacks_liberty/open-liberty-runtime-full
+[builder]     Installing iFix 22003-wlp-archive-ifph44666.jar
+[builder]       Applying fix to Liberty install directory at /layers/paketo-buildpacks_liberty/open-liberty-runtime-full now.
+[builder]       	lib/com.ibm.ws.openapi.ui.private_1.0.62.cl220320220308-1516.jar
+[builder]       	lib/com.ibm.ws.openapi.ui_1.0.62.cl220320220308-1516.jar
+[builder]       	lib/com.ibm.ws.microprofile.openapi.ui_1.0.62.cl220320220308-1516.jar
+[builder]       Fix has been applied successfully.
+[builder]       Successfully extracted all product files.
+|=========
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -695,6 +799,49 @@ The build output will show the iFix being applied:
 == Using UBI images 
 
 **Walkthrough:**
+
+**Creating the Stack Image:**
+
+Create the following script when creating UBI image. 
+
+[source, console]
+#!/usr/bin/env bash
+main() {
+  readonly LIBERTY_USR_DIRS=(
+    "/workspace/wlp/usr"
+    "/workspace/usr"
+    "/layers/paketo-buildpacks_liberty/base/wlp/usr"
+  )
+  for liberty_usr_dir in "${LIBERTY_USR_DIRS[@]}"; do
+    if [[ -d "${liberty_usr_dir}" ]]; then
+      local usr_dir="${liberty_usr_dir}"
+      break
+    fi
+  done
+  cp -rf "${usr_dir}/." "${BPI_LIBERTY_RUNTIME_ROOT}/usr/"
+  # Call Liberty runtime's bootstrap script
+  docker-server.sh "${@}"
+}
+main "${@}"
+
+**Building the stack images:**
+
+After preparing the `Dockerfile` for the stack, use the following commands to build the run and build images that will be used: 
+
+[source, console]
+docker build -t <image-name>-run:latest --target run .
+docker build -t <image-name>-build:latest --target build .
+
+Replace `<image-name` with whatever image name you would like to use.
+
+**Deploying a Liberty application:**
+
+Use the following command with custom stack images and builder specified:
+
+[source, console]
+$ pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
+
+|=========
 //Run through the commands and show what the output looks like
 //Setup insturctions first and then the "Building the Stack Images" and include output
 
