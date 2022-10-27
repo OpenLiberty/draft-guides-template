@@ -841,9 +841,8 @@ Use the following command with custom stack images and builder specified:
 [source, console]
 $ pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
 
-|=========
-//Run through the commands and show what the output looks like
-//Setup insturctions first and then the "Building the Stack Images" and include output
+ 
+
 
 [width="100%", cols="10, 10"]
 [source, adoc]
