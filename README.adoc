@@ -553,9 +553,9 @@ pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> my
 
 //Include brief summary of CF Buildpacks installing custom features
 
-In Paketo Buildpacks, custom features can be configured on the server as well as using a volume mount to the `/features` directory that contains the feature JARs, manifests, and feature descriptor. 
+In Paketo Buildpacks, custom features are configured using a volume mount to the `/features` directory that contains the feature JARs, manifests, and feature descriptor. 
 
-The feature manifest is a `features.toml` file containing a list of features that would be installed on the server.
+The feature manifest is a TOML file called `features.toml` file containing a list of features that would be installed on the server.
 
 A feature has the following properties:
 [disc]
@@ -566,7 +566,7 @@ A feature has the following properties:
 
 For this walkthrough, an example feature, `jar`, and `.mf` file will be used. 
 
-First create the feature descriptor with the following content: 
+First, create the `features.toml` file with the following content: 
 
 [source, console]
 ----
@@ -580,7 +580,7 @@ First create the feature descriptor with the following content:
 Then in the `features` directory, include the `features.toml`, `cache.dummy_1.0.0.mf`, and `cache.dummy_1.0.0.jar` and gzip the entire directory like so: 
 
 [source, console]
-$ tar tzf liberty-conf.tar.gz
+$ tar czvf features.tar.gz *
 ./
 ./features/
 ./features.toml
@@ -589,9 +589,9 @@ $ tar tzf liberty-conf.tar.gz
 
 The custom features can then be used in the build in the following command by mounting the feature directory to `/features`.
 
-`pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /features-file-path paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp`
+`pack build --env BP_JAVA_APP_SERVER=liberty --volume path-to-features-directory:/features --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp`
 
-The expected output will be the following: 
+A successful build output should contain the following in the `Paketo Buildpack for Liberty` section: 
 
 [source, console]
 ----
@@ -610,13 +610,32 @@ The expected output will be the following:
 [builder]     $BP_LIBERTY_CONTEXT_ROOT           Context root to use for app
 [builder]     $BP_LIBERTY_SERVER_NAME            Name of the server to use
 [builder] Warning: The default profile for Open Liberty will change from 'full' to 'kernel' after 2022-11-01. To continue using the full profile, build with the argument '--env BP_LIBERTY_PROFILE=full'
-[builder]   Launch Helper: Contributing to layer
-[builder]     Creating /layers/paketo-buildpacks_liberty/helper/exec.d/linker
+[builder]   Launch Helper: Reusing cached layer
 [builder]   Open Liberty Config: Contributing to layer
 [builder]     Writing env.launch/BPI_LIBERTY_SERVER_NAME.default
 [builder]     Writing env.launch/WLP_USER_DIR.default
 [builder]   Open Liberty (All Features) 22.0.9: Contributing to layer
 [builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.9/openliberty-runtime-22.0.0.9.zip
+[builder]     Verifying checksum
+[builder]     Expanding to /layers/paketo-buildpacks_liberty/open-liberty-runtime-full
+[builder]     Installing features...
+[builder]       Initializing ...
+[builder]       Using 8 threads to download artifacts.
+[builder]       Resolving remote features. This process might take several minutes to complete.
+[builder]       The server does not require any additional features. No features were installed.
+[builder]       Start product validation...
+[builder]       Product validation completed successfully.
+[builder]     Writing env.launch/BPI_LIBERTY_RUNTIME_ROOT.default
+[builder]     Writing env.launch/BPL_JVM_CLASS_ADJUSTMENT.default
+[builder]     Writing env.launch/WLP_LOGGING_APPS_WRITE_JSON.default
+[builder]     Writing env.launch/WLP_LOGGING_CONSOLE_FORMAT.default
+[builder]     Writing env.launch/WLP_LOGGING_CONSOLE_SOURCE.default
+[builder]     Writing env.launch/WLP_LOGGING_JSON_ACCESS_LOG_FIELDS.default
+[builder]     Writing env.launch/WLP_LOGGING_MESSAGE_FORMAT.default
+[builder]     Writing env.launch/WLP_LOGGING_MESSAGE_SOURCE.default
+[builder]     Writing env.launch/WLP_OUTPUT_DIR.override
+[builder]   Process types:
+[builder]     open-liberty-runtime: server run defaultServer (direct)
 ...
 ----
 
@@ -626,18 +645,36 @@ The expected output will be the following:
 |*Cloud Foundry Buildpack Commands* |*Paketo Buildpacks Commands*
 a| In CF Buildpacks, the Liberty for Java runtime includes a list of features that are available in Liberty. You can install features that aren't included in the runtime by running the `installUtility` command as a pre-runtime hook when the app is being pushed to IBM Cloud i.e. adding MicroProfile Config 3.0. 
 
-1. In the root directory of the app, create a `.profile.d` directory. Use the `.profile.d` feature to copy the manifest and feature jar to the user feature path and user bundle path
+* In the root directory of the app, create a `.profile.d` directory. Use the `.profile.d` feature to copy the manifest and feature jar to the user feature path and user bundle path. 
 
-2. Modify the `server.xml` to enable the user feature
+The script should look like the following:
 
-// [source, console]
-// ----
-// #!/bin/sh
-// echo "Installing audit-1.0"
-// export PATH=$PATH:$HOME/app/.java/jre/bin
+[source, console]
+----
+#!/bin/sh
+echo "Installing custom feature"
+ 
+echo "Making directories...."
+mkdir -p /home/vcap/app/wlp/usr/extension/lib/features
+ 
+echo "Copying files..."
+cp /home/vcap/app/.profile.d/.feature/cache.dummy_1.0.0.jar /home/vcap/app/wlp/usr/extension/lib/.
+cp /home/vcap/app/.profile.d/.feature/cache.dummy_1.0.0.mf /home/vcap/app/wlp/usr/extension/lib/features/.
+----
 
-// $HOME/app/.liberty/bin/installUtility install audit-1.0 --acceptLicense
-// ----
+In this example the contents of the `.profile.d` directory is:
+
+[source, console]
+----
+./instfeature.sh
+./.feature
+./.feature/cache.dummy_1.0.0.mf
+./.feature/cache.dummy_1.0.0.jar
+----
+
+`Instfeature.sh` is the script containing the above content and the `.feature`` directory has the custom feature jar and manifest. 
+
+
 a| **Using Custom Features:** Custom features can can either be configured on the server or using a volume mount to `/features` that contains the feature JARs and manifests along with a feature descriptor.
 
 **Feature Manifest:** The feature manifest is a `features.toml` file containing a list of `features` that would be installed on the server.
@@ -678,7 +715,7 @@ $ tar tzf liberty-conf.tar.gz
 
 Then, the custom features can be provided to the build by mounting the feature directory to `/features`:
 [source, console]
-pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume /Users/userNameHere/Development/paketo-buildpacks/liberty-e2e.bak/data/conf/features:/features myapp
+pack build --path myapp --env BP_JAVA_APP_SERVER=liberty --volume path-to-features-directory:/features myapp
 
 |=========
 
@@ -693,33 +730,43 @@ There are the following requirements to install iFixes:
 * Only the archive versions of Liberty iFixes are supported 
 * The iFixes are in a directory named `ifixes`
 
-For example the contents of the `ifixes` directory should look like the following:
+In this walkthrough, `22009-wlp-archive-ifph46816.jar` ifix was downloaded for the 22.0.0.9 release. The ifix is then placed into the `ifixes` directory. The directory should have the following structure:
 
 [source, console]
 ifixes/
-ifixes/220002-wlp-archive-ifph12345.jar
-ifixes/220002-wlp-archive-ifph67890.jar
+22009-wlp-archive-ifph46816.jar
 
 Specify the `--volume` parameter mapping your local `ifixes/` directory to `/ifixes` in the container
 
 [source, console]
-pack build myapp --env BP_JAVA_APP_SERVER=liberty --volume /path/to/ifixes:/ifixes
+pack build --env BP_JAVA_APP_SERVER=liberty --volume path-to-ifixes:/ifixes --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java your-app-here
 
 The build output will show the iFix being applied: 
 
 [source, console]
-[builder]   Open Liberty (All Features) 22.0.3: Contributing to layer
-[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.3/openliberty-runtime-22.0.0.3.zip
+----
+...
+[builder]   Open Liberty (All Features) 22.0.9: Contributing to layer
+[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.9/openliberty-runtime-22.0.0.9.zip
 [builder]     Verifying checksum
 [builder]     Expanding to /layers/paketo-buildpacks_liberty/open-liberty-runtime-full
-[builder]     Installing iFix 22003-wlp-archive-ifph44666.jar
+[builder]     Installing features...
+[builder]       Initializing ...
+[builder]       Using 8 threads to download artifacts.
+[builder]       Resolving remote features. This process might take several minutes to complete.
+[builder]       The server does not require any additional features. No features were installed.
+[builder]       Start product validation...
+[builder]       Product validation completed successfully.
+[builder]     Installing iFix 22009-wlp-archive-ifph46816.jar
 [builder]       Applying fix to Liberty install directory at /layers/paketo-buildpacks_liberty/open-liberty-runtime-full now.
-[builder]       	lib/com.ibm.ws.openapi.ui.private_1.0.62.cl220320220308-1516.jar
-[builder]       	lib/com.ibm.ws.openapi.ui_1.0.62.cl220320220308-1516.jar
-[builder]       	lib/com.ibm.ws.microprofile.openapi.ui_1.0.62.cl220320220308-1516.jar
+[builder]       	lib/com.ibm.ws.transport.http_1.0.68.cl220920220831-1859.jar
+[builder]       	lib/com.ibm.ws.webcontainer.jakarta_1.1.68.cl220920220831-1859.jar
+[builder]       	lib/com.ibm.ws.webcontainer_1.1.68.cl220920220831-1859.jar
 [builder]       Fix has been applied successfully.
 [builder]       Successfully extracted all product files.
-|=========
+...
+----
+
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -800,49 +847,317 @@ The build output will show the iFix being applied:
 
 **Walkthrough:**
 
-**Creating the Stack Image:**
+The Paketo buildpack can use Open Liberty runtime provided in the stack run image. This allows you to use the optimizations and configurations by IBM Cloud Container Registry (ICR) and more information can be found https://github.com/OpenLiberty/ci.docker/blob/main/docs/icr-images.md[here].
 
-Create the following script when creating UBI image. 
+In the following steps, you will create three files: `bootstrap.sh`, `Dockerfile`, and `builder.toml`.
 
-[source, console]
+1) The first step, in a directory of your choosing, create a `bootstrap.sh` file with the following contents. This file will be in the same directory as your `Dockerfile`. The script is necessary to be able to grab the configuration and application created by the buildpacks. Confirm that the `bootstrap.sh` is executable before proceeding to the next step.
+
+[source, shellscript]
+----
 #!/usr/bin/env bash
+
 main() {
   readonly LIBERTY_USR_DIRS=(
     "/workspace/wlp/usr"
     "/workspace/usr"
     "/layers/paketo-buildpacks_liberty/base/wlp/usr"
   )
+
   for liberty_usr_dir in "${LIBERTY_USR_DIRS[@]}"; do
     if [[ -d "${liberty_usr_dir}" ]]; then
       local usr_dir="${liberty_usr_dir}"
       break
     fi
   done
+
   cp -rf "${usr_dir}/." "${BPI_LIBERTY_RUNTIME_ROOT}/usr/"
+
   # Call Liberty runtime's bootstrap script
   docker-server.sh "${@}"
 }
+
 main "${@}"
+----
 
-**Building the stack images:**
+Second, create the Dockerfile and add the following to the file. In this walkthrough, we will be pulling the `open-liberty:kernel-slim-java11-openj9-ubi` version.
 
-After preparing the `Dockerfile` for the stack, use the following commands to build the run and build images that will be used: 
+[source, shellscript]
+----
+# RUN IMAGE
+FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi as run
+
+ENV CNB_USER_ID=1001
+ENV CNB_GROUP_ID=0
+ENV CNB_STACK_ID="io.buildpacks.stacks.liberty"
+LABEL io.buildpacks.stack.id="io.buildpacks.stacks.liberty"
+
+# Set environment variables used by the Open Liberty CNB.
+ENV SERVICE_BINDING_ROOT=/platform/bindings
+ENV BPI_LIBERTY_ROOT=/opt/ol
+ENV BPI_LIBERTY_RUNTIME_ROOT=${BPI_LIBERTY_ROOT}/wlp
+ENV WLP_USER_DIR=${BPI_LIBERTY_RUNTIME_ROOT}/usr
+ENV PATH=${BPI_LIBERTY_ROOT}/helpers/runtime:${BPI_LIBERTY_RUNTIME_ROOT}/bin:${PATH}
+
+# Set user and group (as declared in the base image)
+USER ${CNB_USER_ID}
+
+COPY --chown=${CNB_USER_ID}:${CNB_GROUP_ID} bootstrap.sh ${BPI_LIBERTY_ROOT}/helpers/runtime/
+
+# This script will add the requested server configurations (optionally), apply any interim fixes (optionally) and populate caches to optimize runtime
+RUN configure.sh
+
+FROM registry.access.redhat.com/ubi8/ubi:8.5 as build
+
+# BUILD IMAGE
+ENV CNB_USER_ID=1001
+ENV CNB_GROUP_ID=0
+ENV CNB_STACK_ID="io.buildpacks.stacks.liberty"
+LABEL io.buildpacks.stack.id="io.buildpacks.stacks.liberty"
+
+# Provides hint to the Open Liberty buildpack which version of Liberty is being used at build time
+ENV BPI_LIBERTY_RUNTIME_ROOT=/opt/ol/wlp
+RUN mkdir -p ${BPI_LIBERTY_RUNTIME_ROOT}
+
+RUN useradd --uid ${CNB_USER_ID} --gid ${CNB_GROUP_ID} -m -s /bin/bash cnb
+
+RUN yum -y install git wget jq && wget https://github.com/sclevine/yj/releases/download/v5.0.0/yj-linux -O /usr/local/bin/yj && chmod +x /usr/local/bin/yj
+
+# Set user and group (as declared in the base image)
+USER ${CNB_USER_ID}
+----
+
+Third, after preparing the `Dockerfile` for the stack, use the following commands to build the run and build images that will be used: 
 
 [source, console]
 docker build -t <image-name>-run:latest --target run .
 docker build -t <image-name>-build:latest --target build .
 
-Replace `<image-name` with whatever image name you would like to use.
+Replace `<image-name>` with the image name that you would like to use.
 
-**Deploying a Liberty application:**
-
-Use the following command with custom stack images and builder specified:
+The `docker build -t <image-name>-run:latest --target run .` command will have the following output if successful: 
 
 [source, console]
-$ pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
+----
+ => [internal] load build definition from Dockerfile                                                                                                                                    0.0s
+ => => transferring dockerfile: 37B                                                                                                                                                     0.0s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load metadata for icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi                                                                                              0.3s
+ => [internal] load build context                                                                                                                                                       0.0s
+ => => transferring context: 514B                                                                                                                                                       0.0s
+ => CACHED [run 1/3] FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi@sha256:43b1b7a94fa6fc428767e6b39368907ca319979203a0b6ee0d7af983eff4402e                             0.0s
+ => [run 2/3] COPY --chown=1001:0 bootstrap.sh /opt/ol/helpers/runtime/                                                                                                                 0.0s
+ => [run 3/3] RUN configure.sh                                                                                                                                                          4.6s
+ => exporting to image                                                                                                                                                                  0.1s
+ => => exporting layers                                                                                                                                                                 0.1s
+ => => writing image sha256:89212c1d996f6fe08f3d0410bc09ccca33d60315a50682db6a34da8420b718a8                                                                                            0.0s
+ => => naming to docker.io/library/starter-image-run:latest                                                                                                                             0.0s
+----
 
- 
+The `docker build -t <image-name>-build:latest --target build .` command will have the following output if successful:
 
+[source, console]
+----
+ => [internal] load build definition from Dockerfile                                                                                                                                    0.0s
+ => => transferring dockerfile: 37B                                                                                                                                                     0.0s
+ => [internal] load .dockerignore                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                         0.0s
+ => [internal] load metadata for registry.access.redhat.com/ubi8/ubi:8.5                                                                                                                0.8s
+ => [build 1/4] FROM registry.access.redhat.com/ubi8/ubi:8.5@sha256:798025840cb82140df8d05775f7f55fff3b16a599bd5ca76b11594f7a9a595fa                                                    0.0s
+ => CACHED [build 2/4] RUN mkdir -p /opt/ol/wlp                                                                                                                                         0.0s
+ => CACHED [build 3/4] RUN useradd --uid 1001 --gid 0 -m -s /bin/bash cnb                                                                                                               0.0s
+ => CACHED [build 4/4] RUN yum -y install git wget jq && wget https://github.com/sclevine/yj/releases/download/v5.0.0/yj-linux -O /usr/local/bin/yj && chmod +x /usr/local/bin/yj       0.0s
+ => exporting to image                                                                                                                                                                  0.0s
+ => => exporting layers                                                                                                                                                                 0.0s
+ => => writing image sha256:c8325b72e4110a245c993930f75a89d3f525e66158358a4e79bcd6127b9d27c7                                                                                            0.0s
+ => => naming to docker.io/library/starter-image-build:latest                                                                                                                           0.0s
+----
+
+Fourth, create a custom builder by creating a `builder.toml` file with the following contents: 
+
+[source, toml]
+----
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/ca-certificates"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/eclipse-openj9"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/syft"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/leiningen"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/gradle"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/maven"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/liberty"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/procfile"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/environment-variables"
+
+[[buildpacks]]
+  uri = "docker://gcr.io/paketo-buildpacks/image-labels"
+
+[[order]]
+
+  [[order.group]]
+    id = "paketo-buildpacks/ca-certificates"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/eclipse-openj9"
+    optional = false
+
+  [[order.group]]
+    id = "paketo-buildpacks/syft"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/gradle"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/maven"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/liberty"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/procfile"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/environment-variables"
+    optional = true
+
+  [[order.group]]
+    id = "paketo-buildpacks/image-labels"
+    optional = true
+
+[stack]
+  id = "io.buildpacks.stacks.liberty"
+  run-image = "<image-name>-run:latest"
+  build-image = "<image-name>-build:latest"
+----
+
+Replace the `stack.run-image` and `stack.build-image` values with your `image-name` value you used. Then the builder can be used by running the following command: 
+
+[source, console]
+pack -v builder create mybuilder:latest --config builder.toml
+
+The above command will have the following output:
+
+[source, console]
+----
+Pulling image starter-image-run:latest
+Pulling image starter-image-build:latest
+Creating builder mybuilder:latest from build-image starter-image-build:latest
+...
+Status: Image is up to date for gcr.io/paketo-buildpacks/image-labels:latest
+Creating builder with the following buildpacks:
+-> paketo-buildpacks/ca-certificates@3.4.0
+-> paketo-buildpacks/eclipse-openj9@9.7.0
+-> paketo-buildpacks/syft@1.21.0
+-> paketo-buildpacks/leiningen@4.4.0
+-> paketo-buildpacks/gradle@6.8.0
+-> paketo-buildpacks/maven@6.11.0
+-> paketo-buildpacks/liberty@2.4.0
+-> paketo-buildpacks/procfile@5.4.0
+-> paketo-buildpacks/environment-variables@4.3.0
+-> paketo-buildpacks/image-labels@4.3.0
+Adding buildpack paketo-buildpacks/image-labels@4.3.0 (diffID=sha256:6613db21bd509b876a76e2c3cca317f32141e2243d8e2a231f88517dcc88ffcf)
+Adding buildpack paketo-buildpacks/ca-certificates@3.4.0 (diffID=sha256:0c16b901029079ec6f2f154f2bcf7b82c932bbfe8bd7665e9d753b0869491fb2)
+Adding buildpack paketo-buildpacks/eclipse-openj9@9.7.0 (diffID=sha256:fbe1a86cae3b45034e26c29d46f60dcd289ad43f61ba98955514376c174de5ee)
+Adding buildpack paketo-buildpacks/leiningen@4.4.0 (diffID=sha256:dca34fe44b9c62ddab049fa3638703ca40d12dc3a37f83cc892d5c3a6b3b9075)
+Adding buildpack paketo-buildpacks/liberty@2.4.0 (diffID=sha256:9c8a0114133fc3aa2765216509a020983d5d16cd3bfaa5d958818344b995c083)
+Adding buildpack paketo-buildpacks/procfile@5.4.0 (diffID=sha256:8c184880fd75919ea528e3f506e93f99022eecbbcb5a797c5cf134806bb13761)
+Adding buildpack paketo-buildpacks/environment-variables@4.3.0 (diffID=sha256:0952cc879389c15fa9f4dd50fe9365d672a0ec4e751438899eda65c782fa1b4c)
+Adding buildpack paketo-buildpacks/syft@1.21.0 (diffID=sha256:e9482447bd072ccbd758e5bf6517123f724e3cd3f1ed85e76bdfc55c2e54e947)
+Adding buildpack paketo-buildpacks/gradle@6.8.0 (diffID=sha256:a707ff8bbd5a93e09a6b9973a55e096c48a9f5768865b0db25a6a36046355df6)
+Adding buildpack paketo-buildpacks/maven@6.11.0 (diffID=sha256:53d7320eb399555d2eb990958b8624ea6ff2a4beccc3b9aa8041294dd9db1b9d)
+Successfully created builder image mybuilder:latest
+----
+
+Fifth, with the stack images and custom builder created, you can deploy a Liberty application by using the following `pack build` command: 
+
+[source, console]
+pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
+
+If the above `pack build` command is successful, it will have the following output. Be on the lookout for `boostrap.sh server run DefaultServer (direct)` and `Successfully built image` in the output.
+
+[source, console]
+----
+0.14.1: Pulling from buildpacksio/lifecycle
+36698cfa5275: Pull complete
+4f80531f7622: Pull complete
+Digest: sha256:56019ba74831e3444f33ee8c0201f18cc300213bac353b8b6a79c7a1669b7a49
+Status: Downloaded newer image for buildpacksio/lifecycle:0.14.1
+===> ANALYZING
+[analyzer] Restoring data for SBOM from previous image
+===> DETECTING
+[detector] 5 of 9 buildpacks participating
+[detector] paketo-buildpacks/ca-certificates 3.4.0
+[detector] paketo-buildpacks/eclipse-openj9  9.7.0
+[detector] paketo-buildpacks/syft            1.21.0
+[detector] paketo-buildpacks/maven           6.11.0
+[detector] paketo-buildpacks/liberty         2.4.0
+...
+[builder] Paketo Buildpack for Liberty 2.4.0
+[builder]   https://github.com/paketo-buildpacks/liberty
+[builder]   Build Configuration:
+[builder]     $BP_JAVA_APP_SERVER             the application server to use
+[builder]     $BP_LIBERTY_FEATURES            A space separated list of liberty features to install.
+[builder]     $BP_LIBERTY_INSTALL_TYPE  none  Install type of Liberty
+[builder]     $BP_LIBERTY_PROFILE             The Liberty profile to install
+[builder]     $BP_LIBERTY_SERVER_NAME         Name of the server to use
+[builder]     $BP_LIBERTY_VERSION       *     Which version of the Liberty runtime to install
+[builder]   Launch Configuration:
+[builder]     $BPL_LIBERTY_LOG_LEVEL          Sets the logging level
+[builder]     $BP_LIBERTY_CONTEXT_ROOT        Context root to use for app
+[builder]     $BP_LIBERTY_SERVER_NAME         Name of the server to use
+[builder]   Launch Helper: Reusing cached layer
+[builder]   Open Liberty Config: Reusing cached layer
+[builder]   Process types:
+[builder]     open-liberty-stack: bootstrap.sh server run defaultServer (direct)
+===> EXPORTING
+[exporter] Reusing layer 'paketo-buildpacks/ca-certificates:helper'
+[exporter] Reusing layer 'paketo-buildpacks/eclipse-openj9:helper'
+[exporter] Reusing layer 'paketo-buildpacks/eclipse-openj9:java-security-properties'
+[exporter] Reusing layer 'paketo-buildpacks/eclipse-openj9:jre'
+[exporter] Reusing layer 'paketo-buildpacks/liberty:base'
+[exporter] Reusing layer 'paketo-buildpacks/liberty:helper'
+[exporter] Reusing layer 'launch.sbom'
+[exporter] Reusing 1/1 app layer(s)
+[exporter] Reusing layer 'launcher'
+[exporter] Reusing layer 'config'
+[exporter] Reusing layer 'process-types'
+[exporter] Adding label 'io.buildpacks.lifecycle.metadata'
+[exporter] Adding label 'io.buildpacks.build.metadata'
+[exporter] Adding label 'io.buildpacks.project.metadata'
+[exporter] Setting default process type 'open-liberty-stack'
+[exporter] Saving myapp...
+[exporter] *** Images (1345c46d6bb6):
+[exporter]       myapp
+[exporter] Reusing cache layer 'paketo-buildpacks/eclipse-openj9:jdk'
+[exporter] Reusing cache layer 'paketo-buildpacks/syft:syft'
+[exporter] Reusing cache layer 'paketo-buildpacks/maven:application'
+[exporter] Reusing cache layer 'paketo-buildpacks/maven:cache'
+[exporter] Reusing cache layer 'paketo-buildpacks/maven:maven'
+[exporter] Reusing cache layer 'cache.sbom'
+Successfully built image myapp
+----
 
 [width="100%", cols="10, 10"]
 [source, adoc]
@@ -863,7 +1178,7 @@ a| Using a Liberty Runtime Provided in the Stack Run Image
 
 **Creating the Stack Image:**
 
-Create the following script: 
+Create the following bootstrap script (`bootstrap.sh`): 
 
 [source, console]
 #!/usr/bin/env bash
@@ -887,6 +1202,8 @@ main "${@}"
 
 **Building the stack images:**
 
+When creating the `Dockerfile`, you can use different images by specifying the UBI images in the first line of `Dockerfile` found here: https://github.com/OpenLiberty/ci.docker/blob/main/docs/icr-images.md[IBM Cloud Container Registry documentation].
+
 After preparing the `Dockerfile` for the stack, use the following commands to build the run and build images that will be used: 
 
 [source, console]
@@ -901,6 +1218,10 @@ Use the following command with custom stack images and builder specified:
 
 [source, console]
 $ pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
+
+**Other information:**
+
+Further information regarding "Installing Open Liberty or Websphere Liberty iFixes" and "Installing Open Liberty or Websphere Liberty features" can be found in the following https://github.com/kevin-ortega/liberty/blob/updateStackDoc/docs/using-liberty-stack.md[documentation update].
 
 |=========
 
