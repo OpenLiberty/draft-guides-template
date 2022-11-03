@@ -294,10 +294,6 @@ a| Using server.xml at build time:
 
 Run the following commands: 
 
-Navigate to getting-started-java directory or any sample app
-[source, console]
-pack config default-builder gcr.io/paketo-buildpacks/builder:base
-
 Build the application on Liberty:
 [source, console]
 pack build app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_MAVEN_BUILT_ARTIFACT="target/*.[ejw]ar src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java
@@ -311,14 +307,6 @@ Server Config with Maven applications
 Server Config with Gradle applications
 [source, console]
 --env BP_GRADLE_BUILT_ARTIFACT="build/libs/*.[ejw]ar src/main/liberty/config/*"
-
-//Add a generic location for server config file. Using bindings 
-
-To check if the server.xml file is in the directory, while running the docker image, execute the following command: 
-
-`docker exec -it $(docker ps -q) /bin/bash`
-
-`ls` into the directory to locate the server config file being used.
 
 a| Binding service 
 
@@ -464,7 +452,7 @@ a| The buildpack can build from a Liberty server installation directory or from 
 To build from a Liberty server installation, change your working directory to the installation root containing the `wlp` directory and run the following command: 
 
 [source, console]
-`pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp`
+pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java sampleapp`
 
 |=========
 
@@ -536,7 +524,9 @@ This command generates a `serverName.zip` file in the server's directory and the
 [source, console]
 cf push <yourappname> -p wlp/usr/servers/defaultServer/serverName.zip
 
-a| Building from a Packaged Server: Use the `server package` command of the Liberty runtime to create a packaged server. Run the following command from Liberty installation's `wlp` directory:app-name:
+a| Building from a Packaged Server: 
+
+Use the `server package` command of the Liberty runtime to create a packaged server. Run the following command from Liberty installation's `wlp`
 
 [source, console]
 bin/server package defaultServer --include=usr
@@ -675,18 +665,7 @@ In this example the contents of the `.profile.d` directory is:
 `Instfeature.sh` is the script containing the above content and the `.feature`` directory has the custom feature jar and manifest. 
 
 
-a| **Using Custom Features:** Custom features can can either be configured on the server or using a volume mount to `/features` that contains the feature JARs and manifests along with a feature descriptor.
-
-**Feature Manifest:** The feature manifest is a `features.toml` file containing a list of `features` that would be installed on the server.
-
-A feature has the following properties:
-[disc]
-* `name`: Name of the feature to enable. Use symbolic name of the feature that you would use when enabling the feature in the `server.xml`
-* `uri`: URI of where to find the fetaure. The `file` scheme is the only supported scheme at the moment.
-* `version`: Version of the feature
-* `dependencies`: List of features that the custom feature depends on
-
-**Example Feature Manifest**: This example shows how to configure a feature called `dummyCache` that has a dependency `distributedMap-1.0` feature. Any additional features added will use the same format as the example below.
+a| **Using Custom Features:** 
 
 First create the feature descriptor `features.toml` with the following content:
 [source, toml]
@@ -809,19 +788,6 @@ CWWKF0015I: The server has the following interim fixes active in the runtime: PI
 a| **How to apply an iFix to the Liberty runtime**
 
 An iFix can be applied to the liberty runtime using a volume mount. 
-
-There are the following requirements to install iFixes: 
-
-* Only the archive versions of Liberty iFixes are supported 
-* The iFixes are in a directory named `ifixes`
-
-For example the contents of the `ifixes` directory should look like the following:
-
-[source, console]
-ifixes/
-ifixes/220002-wlp-archive-ifph12345.jar
-ifixes/220002-wlp-archive-ifph67890.jar
-
 Specify the `--volume` parameter mapping your local `ifixes/` directory to `/ifixes` in the container
 
 [source, console]
@@ -829,18 +795,6 @@ pack build myapp --env BP_JAVA_APP_SERVER=liberty --volume /path/to/ifixes:/ifix
 
 The build output will show the iFix being applied: 
 
-[source, console]
-[builder]   Open Liberty (All Features) 22.0.3: Contributing to layer
-[builder]     Downloading from https://repo1.maven.org/maven2/io/openliberty/openliberty-runtime/22.0.0.3/openliberty-runtime-22.0.0.3.zip
-[builder]     Verifying checksum
-[builder]     Expanding to /layers/paketo-buildpacks_liberty/open-liberty-runtime-full
-[builder]     Installing iFix 22003-wlp-archive-ifph44666.jar
-[builder]       Applying fix to Liberty install directory at /layers/paketo-buildpacks_liberty/open-liberty-runtime-full now.
-[builder]       	lib/com.ibm.ws.openapi.ui.private_1.0.62.cl220320220308-1516.jar
-[builder]       	lib/com.ibm.ws.openapi.ui_1.0.62.cl220320220308-1516.jar
-[builder]       	lib/com.ibm.ws.microprofile.openapi.ui_1.0.62.cl220320220308-1516.jar
-[builder]       Fix has been applied successfully.
-[builder]       Successfully extracted all product files.
 |=========
 
 == Using UBI images 
@@ -1175,30 +1129,6 @@ cf push APP-NAME --docker-image REPO/IMAGE:TAG
 More reference information on pushing an app in CF using a docker image can be found here: https://docs.cloudfoundry.org/devguide/deploy-apps/push-docker.html[Deploying an App with Docker]
 
 a| Using a Liberty Runtime Provided in the Stack Run Image
-
-**Creating the Stack Image:**
-
-Create the following bootstrap script (`bootstrap.sh`): 
-
-[source, console]
-#!/usr/bin/env bash
-main() {
-  readonly LIBERTY_USR_DIRS=(
-    "/workspace/wlp/usr"
-    "/workspace/usr"
-    "/layers/paketo-buildpacks_liberty/base/wlp/usr"
-  )
-  for liberty_usr_dir in "${LIBERTY_USR_DIRS[@]}"; do
-    if [[ -d "${liberty_usr_dir}" ]]; then
-      local usr_dir="${liberty_usr_dir}"
-      break
-    fi
-  done
-  cp -rf "${usr_dir}/." "${BPI_LIBERTY_RUNTIME_ROOT}/usr/"
-  # Call Liberty runtime's bootstrap script
-  docker-server.sh "${@}"
-}
-main "${@}"
 
 **Building the stack images:**
 
