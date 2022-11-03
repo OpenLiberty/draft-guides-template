@@ -1095,7 +1095,7 @@ Fifth, with the stack images and custom builder created, you can deploy a Libert
 [source, console]
 pack build myapp --builder mybuilder:latest --env BP_LIBERTY_INSTALL_TYPE="none"
 
-If the above `pack build` command is successful, it will have the following output. Be on the lookout for `boostrap.sh server run DefaultServer (direct)` and `Successfully built image` in the output.
+If the above `pack build` command is successful, it will have the following output. Look for `boostrap.sh server run DefaultServer (direct)` and `Successfully built image` in the output.
 
 [source, console]
 ----
