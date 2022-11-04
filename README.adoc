@@ -8,38 +8,29 @@
 //     IBM Corporation
 //
 
-// :projectid: paketo-buildpacks-intro
+:projectid: migrate-to-paketo-buildpacks
 :page-layout: guide-multipane
-// :page-duration: 15 minutes
-// :page-releasedate: TBD
+:page-duration: 30 minutes
+:page-releasedate: TBD
 :page-description: Learn how to migrate an application using Cloud Foundry buildpacks to Paketo buildpacks. 
-// :page-tags: 
-// :page-permalink: /guides/{projectid}
-// :page-related-guides: ['docker', 'kubernetes-intro']
-// :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
-// :page-guide-category: 
+// :page-tags: ['Paketo']
+:page-permalink: /guides/{projectid}
+// :page-related-guides: [``]
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :page-essential: true
-// :page-essential-order: 3
 :source-highlighter: prettify
-// :page-seo-title: 
-// :page-seo-description: 
-// :common-includes: ../guides-common/
-// :imagesdir: /img/guide/{projectid}
+:page-seo-title: Migrating an application using Cloud Foundry Buildpacks to Paketo Buildpacks
+:page-seo-description: A migration guide
+:guide-author: Open Liberty
 
-// :guide-author: Open Liberty
+
 = Migrating an application using Cloud Foundry Buildpacks to Paketo Buildpacks
 
 You will explore how to migrate an application using Cloud Foundry liberty-for-java buildpack to using Paketo buildpacks.
 
-// =================================================================================================
-//  What you'll learn
-// =================================================================================================
-
 == What you'll learn
 
 Learn how to migrate an application using Cloud Foundry liberty-for-java buildpack to using Paketo buildpacks. You will learn how to migrate and use advanced features of the Paketo buildpack. 
-
-//If you're familiar with using the CF buildpacks to deploy an app
 
 The migration includes learning how to use the following features: 
 
@@ -69,16 +60,12 @@ git clone https://github.com/openliberty/guide-getting-started.git
 cd guide-getting-started/finish
  
 == Building with a simple `war` 
-//start with getting started blog post
-//simple migration - push using a war file
-//paketo.io and buildpacks.io website as references
 **Walkthrough:**
-//Be mindful of consistent use of font and color commands vs output
+
 Previously when using Cloud Foundry, the `war` file was pushed using the `cf push` command. 
 
 For the Paketo Buildpacks command the process is different. After installing `Docker`, `pack CLI`, and JDK in the Getting Started section, you are ready to start building with a simple `war` file. For the purpose of this tutorial, the Open Liberty starter application will be used.
-
-//indicate just finish directory 
+ 
 You are now ready to build the application. For this starter app, navigate to either the `finish` or `start` directory. To generate a `.war` file run the following command: `mvn install` in the app's `finish` directory. It will generate a `guide-getting-started.war` file in the `target` directory.
 
 Once the `.war` file is generated, you can set the default builder, the following `pack config` command will be used: 
@@ -91,7 +78,6 @@ After running the `pack config` command you will get the following output:
 Builder gcr.io/paketo-buildpacks/builder:base is now the default builder
 
 After this command, you can execute the `pack build` command. Make sure to include the `--path` to where the `.war` file was installed and include the `--buildpack` option the build uses the OpenJ9 `--buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java`. The complete `pack build` command will be the following:
-//openj9 JRE
 
 `pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty src/main/liberty/config/*" --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path target/guide-getting-started.war`
 
@@ -168,42 +154,11 @@ Refer to the table below for more information regarding the commands and the com
 // git clone https://github.com/IBM-Cloud/get-started-java
 
 
-  
-// a| Navigate to source code repository (will use Getting started app for example)
-// //delete cell
-// [source, console]
-// git clone https://github.com/openliberty/guide-getting-started.git
-// cd guide-getting-started/finish
-
-// a| Run app locally using command line 
-// [source, console]
-// cd get-started-java
-// mvn clean install
-// mvn install liberty:run-server
-
-// a| Create an OCI image and run application locally
-// [source, console]
-// pack config default-builder gcr.io/paketo-buildpacks/builder:base
-
-// [source, console]
-// pack build --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_PROFILE=jakartaee9 \
-//   --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java myapp
-
-// [source, console]
-// docker run --rm -p 9080:9080 myapp
-
-
 a| Push app using cloud foundry
 [source, console]
 cf push -p myApp.war
 
 a| Create an OCI image and run application locally
-
-//Only have to do the `pack config` command once.
-
-// The pack config command sets the default builder using the pack CLI.
-// [source, console]
-// pack config default-builder gcr.io/paketo-buildpacks/builder:base
 
 The pack build command uses Cloud Native Buildpacks to create an app image from the source code. More info found here: https://buildpacks.io/docs/tools/pack/cli/pack_build/[pack build] 
 [source, console]
@@ -215,10 +170,6 @@ docker run --rm -p 9080:9080 myapp
 // [source, console]
 // bin/server package defaultServer --include=usr
 
-// [source, console]
-// pack build --path <packaged-server-zip-path> \
-//  --buildpack paketo-buildpacks/eclipse-openj9 \
-//  --buildpack paketo-buildpacks/java myapp
 
 |=========
 
@@ -398,11 +349,9 @@ pack build your_app_name_here --env BP_JAVA_APP_SERVER=liberty --env BP_LIBERTY_
 
 **Walkthrough:**
 
-//the buildpack can push
 When using the CF Buildpack, the buildpack can push a custom Liberty server configuration using the `cf push` command.
 
 When using Paketo Buildpacks, the buildpack can build from an existing Liberty server installation directory. 
-// Then execute the following initial set-up steps including: installing a Liberty server from https://openliberty.io/start/[Open Liberty], creating and starting the server using the `server` command, and updating the `server.xml` and `.war` file. 
 
 After the initial setup of the Liberty server, build from a Liberty server installation by changing your working directory to the installation root containing the `wlp` directory and running the following command: 
 
@@ -410,7 +359,6 @@ After the initial setup of the Liberty server, build from a Liberty server insta
 
 The build output will be similar to the previous section with the **liberty** server indicated in the BP_JAVA_APP_SERVER option: 
 
-//modify build output.
 
 [source, console]
 ----
@@ -478,7 +426,6 @@ The packaged server can then be supplied to the build by specifying it in the `-
 
 `pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path usr/servers/your-app-server-name/your-app-server-name.zip sampleapp2`
 
-// `pack build --env BP_JAVA_APP_SERVER=liberty --buildpack paketo-buildpacks/eclipse-openj9 --buildpack paketo-buildpacks/java --path usr/servers/server1/server1.zip sampleapp2`
 
 The following will be the build output: 
 
@@ -540,8 +487,6 @@ pack build --env BP_JAVA_APP_SERVER=liberty --path <packaged-server-zip-path> my
 == Installing custom features
 
 **Walkthrough:**
-
-//Include brief summary of CF Buildpacks installing custom features
 
 In Paketo Buildpacks, custom features are configured using a volume mount to the `/features` directory that contains the feature JARs, manifests, and feature descriptor. 
 
@@ -678,7 +623,6 @@ First create the feature descriptor `features.toml` with the following content:
 ----
 
 Using the above feature description, the Liberty buildpack will look for the feature JAR in the volume mounted on `/features` at the path `features/cache.dummy_1.0.0.jar`. The buildpack also assumes that the feature manifest file will be at the path `features/cache.dummy_1.0.0.mf`. 
-//***QUESTION*** here regarding the guide
 
 After creating the feature descriptor, tar and gzip the `feature.toml` and `features` directory so that it has the contents similar to the following: 
 
