@@ -1,5 +1,4 @@
-// ----------- BEGIN -----------
-// Copyright (c) 2019, 2022 IBM Corporation and others.
+// Copyright (c) 2022 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -7,11 +6,10 @@
 // Contributors:
 //     IBM Corporation
 //
-
 :projectid: migrate-to-paketo-buildpacks
 :page-layout: guide-multipane
 :page-duration: 30 minutes
-:page-releasedate: TBD
+:page-releasedate: 2022-12-15
 :page-description: Learn how to migrate an application using Cloud Foundry buildpacks to Paketo buildpacks. 
 // :page-tags: ['Paketo']
 :page-permalink: /guides/{projectid}
@@ -22,8 +20,6 @@
 :page-seo-title: Migrating an application using Cloud Foundry Buildpacks to Paketo Buildpacks
 :page-seo-description: A migration guide
 :guide-author: Open Liberty
-
-
 = Migrating an application using Cloud Foundry Buildpacks to Paketo Buildpacks
 
 You will explore how to migrate an application using Cloud Foundry liberty-for-java buildpack to using Paketo buildpacks.
