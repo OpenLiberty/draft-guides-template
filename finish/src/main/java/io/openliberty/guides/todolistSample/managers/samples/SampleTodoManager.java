@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 package io.openliberty.guides.todolistSample.managers.samples;
 
 import java.util.ArrayList;
@@ -22,7 +22,9 @@ import io.openliberty.guides.todolistSample.models.*;
 import io.openliberty.guides.todolistSample.managers.*;
 
 @Alternative
+// tag::applicationScoped[]
 @ApplicationScoped
+//end::applicationScoped[]
 public class SampleTodoManager implements TodoManager {
 
 	private List<TodoModel> todos;

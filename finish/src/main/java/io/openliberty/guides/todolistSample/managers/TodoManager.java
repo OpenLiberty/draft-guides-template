@@ -8,12 +8,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 package io.openliberty.guides.todolistSample.managers;
 
-import io.openliberty.guides.todolistSample.models.*;
 import java.util.List;
 import java.util.Optional;
+
+import io.openliberty.guides.todolistSample.models.TodoModel;
 
 public interface TodoManager {
     public List<TodoModel> getTodos();
