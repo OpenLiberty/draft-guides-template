@@ -19,10 +19,10 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 ### Step 3: Know the structure and style.
 
 * Know your audience!
-  * If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
+** If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
 
 * Know the guide structure and the writing styles!
-  * Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
+** Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
 
 
 ### Step 4: Create a new guide.
