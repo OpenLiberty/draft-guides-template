@@ -42,10 +42,7 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 4. Open a new issue in the https://github.com/OpenLiberty/guides-common/issues[guides-common] repository. Describe the topic you wrote, add a link to the repository that contains the complete draft of your guide, and the Open Liberty team will be notified.
 
 5. Certify the originality of your work by following the [Developer Certificate of Origin (DCO)](https://developercertificate.org) approach and adding a line to the end of the Git commit message to sign your work:
-
-```text
-Signed-off-by: Jane Williams <jane.williams@gmail.com>
-```
+  ** `Signed-off-by: Jane Williams <jane.williams@gmail.com>`
   ** The sign-off is just a line at the end of the commit message that certifies that you wrote it or otherwise have the right to pass it on as an open source patch.
   ** Use your real name when you sign. Pseudonyms or anonymous contributions cannot be accepted.
   ** Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
