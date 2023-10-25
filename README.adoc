@@ -79,7 +79,7 @@ Most instruction comments should be removed except the copyright.
 // Also, please delete any instructions that begin with //--** after you read them
 // ----------- BEGIN -----------
 //--** INSTRUCTION: The copyright statement must appear at the top of the file
-// Copyright (c) 2019 IBM Corporation and others.
+// Copyright (c) 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -94,7 +94,7 @@ Most instruction comments should be removed except the copyright.
 //--** INSTRUCTION: Provide an estimate of how long the guide will take to go through.
 :page-duration: 15 minutes
 //--** INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.
-:page-releasedate: 2019-03-11
+:page-releasedate: 2024-03-11
 //--** INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
 :guide-author: Open Liberty
@@ -298,9 +298,9 @@ SampleTodoManager.java
 include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[]
 ----
 
-* Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`,
-[hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
-* Manager is [hotspot=14 file=1]`ApplicationScoped`, which essentially means that it is a singleton.
+* Implemented basic CRUD ([hotspot=create file=1]`Create`, [hotspot=read file=1]`Read`,
+[hotspot=update file=1]`Update`, and [hotspot=delete file=1]`Delete`) operations.
+* Manager is [hotspot=applicationScoped file=1]`ApplicationScoped`, which essentially means that it is a singleton.
 
 == EXAMPLE: Creating the JAX-RS resource
 
@@ -320,8 +320,8 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 ----
 
 * The resource methods are accessible via HTTP
-* Use [hotspot=27-43]`GET`, [hotspot=45-54]`POST`, [hotspot=56-71]`PUT`,
-and [hotspot=73-83]`DELETE` verbs to handle reading, creating, updating,
+* Use [hotspot=get]`GET`, [hotspot=post]`POST`, [hotspot=put]`PUT`,
+and [hotspot=delete]`DELETE` verbs to handle reading, creating, updating,
 and deleting resources
 * Validate data models and send appropriate response accordingly
 // ======================================================================================================
@@ -365,7 +365,7 @@ TodoIT.java
 include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoIT.java[]
 ----
 
-* Explain what each [hotspot=13-20]`@Test` test case is testing
+* Explain what each [hotspot=test1 hotspot=test2]`@Test` test case is testing
 * Explain key methods
 // ======================================================================================================
 
