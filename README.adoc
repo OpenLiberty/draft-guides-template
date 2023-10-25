@@ -6,9 +6,9 @@ Welcome to Open Liberty! In order to contribute a guide for Open Liberty, follow
 
 ### Step 1: Set up your computer.
 
-- Install https://help.github.com/articles/set-up-git/[Git] and become familiar with the https://blog.github.com/2015-07-29-git-2-5-including-multiple-worktrees-and-triangular-workflows/#improved-support-for-triangular-workflows[Git triangular workflow].
-- Install and know the basics of https://maven.apache.org/index.html[Maven] or https://gradle.org[Gradle].
-- Install a text editor with the https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc] compiler plugin and learn the syntax of AsciiDoc.
+* Install https://help.github.com/articles/set-up-git/[Git] and become familiar with the https://blog.github.com/2015-07-29-git-2-5-including-multiple-worktrees-and-triangular-workflows/#improved-support-for-triangular-workflows[Git triangular workflow].
+* Install and know the basics of https://maven.apache.org/index.html[Maven] or https://gradle.org[Gradle].
+* Install a text editor with the https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc] compiler plugin and learn the syntax of AsciiDoc.
 
 ### Step 2 (Optional): Try some existing guides.
 
@@ -18,11 +18,11 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 ### Step 3: Know the structure and style.
 
-- Know your audience!
-* If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
+* Know your audience!
+  * If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
 
-- Know the guide structure and the writing styles!
-* Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
+* Know the guide structure and the writing styles!
+  * Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
 
 
 ### Step 4: Create a new guide.
@@ -49,7 +49,7 @@ Signed-off-by: Jane Williams <jane.williams@gmail.com>
 
 The sign-off is just a line at the end of the commit message that certifies that you wrote it or otherwise have the right to pass it on as an open source patch.
 
-Use your real name when you sign. We can't accept pseudonyms or anonymous contributions.
+Use your real name when you sign. Pseudonyms or anonymous contributions cannot be accepted.
 
 Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
 
@@ -71,8 +71,8 @@ Many Git UI tools have support for adding the `Signed-off-by` line to the end of
 
 ### Step 5: The Open Liberty team will review your guide.
 
-- You can see your feedback from the `Issues` section in your `draft-guide-{projectid}` repository when it's ready.
-- Follow up with the team's review discussions.
+* You can see your feedback from the `Issues` section in your `draft-guide-{projectid}` repository when it's ready.
+* Follow up with the team's review discussions.
 
 ## APPENDIX A: A template README.adoc
 Please open the README.adoc in a text editor or view it in `raw` form. 
