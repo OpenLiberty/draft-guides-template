@@ -46,12 +46,9 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 ```text
 Signed-off-by: Jane Williams <jane.williams@gmail.com>
 ```
-
-The sign-off is just a line at the end of the commit message that certifies that you wrote it or otherwise have the right to pass it on as an open source patch.
-
-Use your real name when you sign. Pseudonyms or anonymous contributions cannot be accepted.
-
-Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
+** The sign-off is just a line at the end of the commit message that certifies that you wrote it or otherwise have the right to pass it on as an open source patch.
+** Use your real name when you sign. Pseudonyms or anonymous contributions cannot be accepted.
+** Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
 
 6. After the Open Liberty team approves your guide and obtains your signed CLA, they will create a draft guide repository in the Open Liberty Project on GitHub for you. Your new repository will be named as `draft-guide-{projectid}`. Then, you can open a pull request that contains your commits for the guide, and the team will be notified for review. 
 
