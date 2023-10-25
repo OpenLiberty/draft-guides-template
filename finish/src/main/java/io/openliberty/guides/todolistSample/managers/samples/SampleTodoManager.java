@@ -24,7 +24,8 @@ import io.openliberty.guides.todolistSample.managers.*;
 @Alternative
 @ApplicationScoped
 public class SampleTodoManager implements TodoManager {
-    private List<TodoModel> todos;
+
+	private List<TodoModel> todos;
     private static int id = 0;
 
     public SampleTodoManager() {
@@ -34,28 +35,33 @@ public class SampleTodoManager implements TodoManager {
         createTodo(new TodoModel("My third task", false));
     }
 
-	@Override
-	public List<TodoModel> getTodos() {
-		return todos;
-	}
+    @Override
+    public List<TodoModel> getTodos() {
+        return todos;
+    }
 
-	@Override
-	public TodoModel createTodo(TodoModel todo) {
+    // tag::create[]
+    @Override
+    public TodoModel createTodo(TodoModel todo) {
         TodoModel tm = todo.withId(++id);
         todos.add(tm);
         return tm;
-	}
+    }
+    // end::create[]
 
-	@Override
-	public Optional<TodoModel> findTodo(Integer id) {
+    // tag::read[]
+    @Override
+    public Optional<TodoModel> findTodo(Integer id) {
         return todos
             .stream()
             .filter(todo -> todo.hasId() && todo.getId() == id)
             .findFirst();
-	}
+    }
+    // end::read[]
 
-	@Override
-	public Optional<TodoModel> updateTodo(Integer id, TodoModel updated) {
+    // tag::update[]
+    @Override
+    public Optional<TodoModel> updateTodo(Integer id, TodoModel updated) {
         Optional<TodoModel> todo = findTodo(id);
 
         if (todo.isPresent()) {
@@ -65,10 +71,12 @@ public class SampleTodoManager implements TodoManager {
         }
 
         return todo;
-	}
+    }
+    // end::update[]
 
-	@Override
-	public Optional<TodoModel> deleteTodo(Integer id) {
+    // tag::delete[]
+    @Override
+    public Optional<TodoModel> deleteTodo(Integer id) {
         Optional<TodoModel> todo = findTodo(id);
 
         if (todo.isPresent()) {
@@ -76,5 +84,6 @@ public class SampleTodoManager implements TodoManager {
         }
 
         return todo;
-	}
+    }
+    // end::delete[]
 }

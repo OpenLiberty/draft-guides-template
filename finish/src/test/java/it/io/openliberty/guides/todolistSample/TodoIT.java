@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 package it.io.openliberty.guides.todolistSample;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(OrderAnnotation.class)
 public class TodoIT {
 
+    // tag::test1[]
     @Test
+    // end::test1[]
     @Order(1)
     public void testGetTodos() throws Exception {
         HttpClient client = HttpClients.createDefault();
@@ -35,7 +37,9 @@ public class TodoIT {
         assertEquals(200, response.getStatusLine().getStatusCode(), "Incorrect response code from url");
     }
 
+    // tag::test2[]
     @Test
+    // end::test2[]
     @Order(2)
     public void testGetFirstTodo() throws Exception {
         HttpClient client = HttpClients.createDefault();

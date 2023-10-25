@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 package io.openliberty.guides.todolistSample.resources;
 
 import java.util.Optional;
@@ -34,6 +34,7 @@ public class TodoResource {
     @Inject
     private TodoManager service;
 
+    // tag::get[]
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTodos() {
@@ -51,7 +52,9 @@ public class TodoResource {
 
         return Response.ok(result.get()).build();
     }
+    // end::get[]
 
+    // tag::post[]
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,7 +65,9 @@ public class TodoResource {
 
         return Response.ok(service.createTodo(todo)).build();
     }
+    // end::post[]
 
+    // tag::put[]
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,7 +84,9 @@ public class TodoResource {
 
         return Response.ok(result.get()).build();
     }
+    // end::put[]
 
+    // tag::delete[]
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
@@ -91,4 +98,5 @@ public class TodoResource {
 
         return Response.ok(result.get()).build();
     }
+    // end::delete[]
 }
