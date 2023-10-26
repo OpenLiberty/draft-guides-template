@@ -11,6 +11,9 @@
 // end::copyright[]
 package io.openliberty.guides.todolistSample.managers.samples;
 
+import io.openliberty.guides.todolistSample.managers.TodoManager;
+import io.openliberty.guides.todolistSample.models.TodoModel;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +21,6 @@ import java.util.Optional;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 
-import io.openliberty.guides.todolistSample.models.*;
-import io.openliberty.guides.todolistSample.managers.*;
 
 @Alternative
 // tag::applicationScoped[]
@@ -27,7 +28,7 @@ import io.openliberty.guides.todolistSample.managers.*;
 //end::applicationScoped[]
 public class SampleTodoManager implements TodoManager {
 
-	private List<TodoModel> todos;
+    private List<TodoModel> todos;
     private static int id = 0;
 
     public SampleTodoManager() {
