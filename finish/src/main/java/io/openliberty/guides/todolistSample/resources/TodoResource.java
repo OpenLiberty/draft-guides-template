@@ -27,7 +27,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
 import io.openliberty.guides.todolistSample.managers.TodoManager;
-import io.openliberty.guides.todolistSample.models.*;
+import io.openliberty.guides.todolistSample.models.TodoModel;
 
 @Path("todo")
 public class TodoResource {
