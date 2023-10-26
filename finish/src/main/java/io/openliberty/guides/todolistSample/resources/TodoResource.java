@@ -1,41 +1,40 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2019 IBM Corporation and others.
+ * Copyright (c) 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-2.0/
  *
- * Contributors:
- *     IBM Corporation - Initial implementation
+ * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 package io.openliberty.guides.todolistSample.resources;
 
 import java.util.Optional;
 
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import io.openliberty.guides.todolistSample.managers.TodoManager;
-import io.openliberty.guides.todolistSample.models.*;
-import io.openliberty.guides.todolistSample.managers.*;
+import io.openliberty.guides.todolistSample.models.TodoModel;
 
 @Path("todo")
 public class TodoResource {
     @Inject
     private TodoManager service;
 
+    // tag::get[]
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTodos() {
@@ -53,7 +52,9 @@ public class TodoResource {
 
         return Response.ok(result.get()).build();
     }
+    // end::get[]
 
+    // tag::post[]
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -64,7 +65,9 @@ public class TodoResource {
 
         return Response.ok(service.createTodo(todo)).build();
     }
+    // end::post[]
 
+    // tag::put[]
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -81,7 +84,9 @@ public class TodoResource {
 
         return Response.ok(result.get()).build();
     }
+    // end::put[]
 
+    // tag::delete[]
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
@@ -93,4 +98,5 @@ public class TodoResource {
 
         return Response.ok(result.get()).build();
     }
+    // end::delete[]
 }

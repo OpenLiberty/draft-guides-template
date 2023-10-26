@@ -6,9 +6,9 @@ Welcome to Open Liberty! In order to contribute a guide for Open Liberty, follow
 
 ### Step 1: Set up your computer.
 
-- Install https://help.github.com/articles/set-up-git/[Git] and become familiar with the https://blog.github.com/2015-07-29-git-2-5-including-multiple-worktrees-and-triangular-workflows/#improved-support-for-triangular-workflows[Git triangular workflow].
-- Install and know the basics of https://maven.apache.org/index.html[Maven] or https://gradle.org[Gradle].
-- Install a text editor with the https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc] compiler plugin and learn the syntax of AsciiDoc.
+* Install https://help.github.com/articles/set-up-git/[Git] and become familiar with the https://blog.github.com/2015-07-29-git-2-5-including-multiple-worktrees-and-triangular-workflows/#improved-support-for-triangular-workflows[Git triangular workflow].
+* Install and know the basics of https://maven.apache.org/index.html[Maven] or https://gradle.org[Gradle].
+* Install a text editor with the https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[AsciiDoc] compiler plugin and learn the syntax of AsciiDoc.
 
 ### Step 2 (Optional): Try some existing guides.
 
@@ -18,11 +18,11 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 ### Step 3: Know the structure and style.
 
-- Know your audience!
-* If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
+* Know your audience!
+** If the guide is introductory, explain the basic concepts of the technology. At the same time, try to avoid overwhelming the reader with too much information. If you're not sure if you've included the correct amount of info, consider asking a new user to try your guide.
 
-- Know the guide structure and the writing styles!
-* Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
+* Know the guide structure and the writing styles!
+** Take a look at the https://github.com/OpenLiberty/guides-template/wiki/Guidelines-for-Structure-and-Styles[Guidelines for Structure and Styles].
 
 
 ### Step 4: Create a new guide.
@@ -41,7 +41,11 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 4. Open a new issue in the https://github.com/OpenLiberty/guides-common/issues[guides-common] repository. Describe the topic you wrote, add a link to the repository that contains the complete draft of your guide, and the Open Liberty team will be notified.
 
-5. You must sign the https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-individual.pdf[Individual Contributor License Agreement] (CLA) in order to contribute. If you are writing the guide as part of your job, you might also want your employer to sign a https://github.com/OpenLiberty/open-liberty/blob/master/cla/open-liberty-cla-corporate.pdf[Corporate Contributor License Agreement] (CCLA). Instructions for how to sign and submit these agreements are provided in each document. You should send your signed CLA document (in PDF) to the email address cla@openliberty.io before you move on to the next step.
+5. Certify the originality of your work by following the https://developercertificate.org[Developer Certificate of Origin (DCO)] approach and adding a line to the end of the Git commit message to sign your work:
+  ** `Signed-off-by: Jane Williams <jane.williams@gmail.com>`
+  ** The sign-off is just a line at the end of the commit message that certifies that you wrote it or otherwise have the right to pass it on as an open source patch.
+  ** Use your real name when you sign. Pseudonyms or anonymous contributions cannot be accepted.
+  ** Many Git UI tools have support for adding the `Signed-off-by` line to the end of your commit message. This line can be automatically added by the `git commit` command by using the `-s` option.
 
 6. After the Open Liberty team approves your guide and obtains your signed CLA, they will create a draft guide repository in the Open Liberty Project on GitHub for you. Your new repository will be named as `draft-guide-{projectid}`. Then, you can open a pull request that contains your commits for the guide, and the team will be notified for review. 
 
@@ -61,8 +65,8 @@ If you're not sure where to start, try the https://openliberty.io/guides/rest-in
 
 ### Step 5: The Open Liberty team will review your guide.
 
-- You can see your feedback from the `Issues` section in your `draft-guide-{projectid}` repository when it's ready.
-- Follow up with the team's review discussions.
+* You can see your feedback from the `Issues` section in your `draft-guide-{projectid}` repository when it's ready.
+* Follow up with the team's review discussions.
 
 ## APPENDIX A: A template README.adoc
 Please open the README.adoc in a text editor or view it in `raw` form. 
@@ -75,7 +79,7 @@ Most instruction comments should be removed except the copyright.
 // Also, please delete any instructions that begin with //--** after you read them
 // ----------- BEGIN -----------
 //--** INSTRUCTION: The copyright statement must appear at the top of the file
-// Copyright (c) 2019 IBM Corporation and others.
+// Copyright (c) 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -90,7 +94,7 @@ Most instruction comments should be removed except the copyright.
 //--** INSTRUCTION: Provide an estimate of how long the guide will take to go through.
 :page-duration: 15 minutes
 //--** INSTRUCTION: Provide the date when the guide is published.  Format is YYYY-MM-DD.
-:page-releasedate: 2019-03-11
+:page-releasedate: 2024-03-11
 //--** INSTRUCTION: Provide a description for the guide index page.
 :page-description: Learn how to create a todo list API as a REST service using JAX-RS, and Open Liberty.
 :guide-author: Open Liberty
@@ -294,9 +298,9 @@ SampleTodoManager.java
 include::finish/src/main/java/io/openliberty/guides/todolistSample/managers/samples/SampleTodoManager.java[]
 ----
 
-* Implemented basic CRUD ([hotspot=32-36 file=1]`Create`, [hotspot=39-44 file=1]`Read`,
-[hotspot=47-57 file=1]`Update`, and [hotspot=60-68 file=1]`Delete`) operations.
-* Manager is [hotspot=14 file=1]`ApplicationScoped`, which essentially means that it is a singleton.
+* Implemented basic CRUD ([hotspot=create file=1]`Create`, [hotspot=read file=1]`Read`,
+[hotspot=update file=1]`Update`, and [hotspot=delete file=1]`Delete`) operations.
+* Manager is [hotspot=applicationScoped file=1]`ApplicationScoped`, which essentially means that it is a singleton.
 
 == EXAMPLE: Creating the JAX-RS resource
 
@@ -316,8 +320,8 @@ include::finish/src/main/java/io/openliberty/guides/todolistSample/resources/Tod
 ----
 
 * The resource methods are accessible via HTTP
-* Use [hotspot=27-43]`GET`, [hotspot=45-54]`POST`, [hotspot=56-71]`PUT`,
-and [hotspot=73-83]`DELETE` verbs to handle reading, creating, updating,
+* Use [hotspot=get]`GET`, [hotspot=post]`POST`, [hotspot=put]`PUT`,
+and [hotspot=delete]`DELETE` verbs to handle reading, creating, updating,
 and deleting resources
 * Validate data models and send appropriate response accordingly
 // ======================================================================================================
@@ -361,7 +365,7 @@ TodoIT.java
 include::finish/src/test/java/it/io/openliberty/guides/todolistSample/TodoIT.java[]
 ----
 
-* Explain what each [hotspot=13-20]`@Test` test case is testing
+* Explain what each [hotspot=test1 hotspot=test2]`@Test` test case is testing
 * Explain key methods
 // ======================================================================================================
 

@@ -1,30 +1,33 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2019 IBM Corporation and others.
+ * Copyright (c) 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-2.0/
  *
- * Contributors:
- *     IBM Corporation - Initial implementation
+ * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- // end::copyright[]
+// end::copyright[]
 package io.openliberty.guides.todolistSample.managers.samples;
+
+import io.openliberty.guides.todolistSample.managers.TodoManager;
+import io.openliberty.guides.todolistSample.models.TodoModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
 
-import io.openliberty.guides.todolistSample.models.*;
-import io.openliberty.guides.todolistSample.managers.*;
 
 @Alternative
+// tag::applicationScoped[]
 @ApplicationScoped
+//end::applicationScoped[]
 public class SampleTodoManager implements TodoManager {
+
     private List<TodoModel> todos;
     private static int id = 0;
 
@@ -35,28 +38,33 @@ public class SampleTodoManager implements TodoManager {
         createTodo(new TodoModel("My third task", false));
     }
 
-	@Override
-	public List<TodoModel> getTodos() {
-		return todos;
-	}
+    @Override
+    public List<TodoModel> getTodos() {
+        return todos;
+    }
 
-	@Override
-	public TodoModel createTodo(TodoModel todo) {
+    // tag::create[]
+    @Override
+    public TodoModel createTodo(TodoModel todo) {
         TodoModel tm = todo.withId(++id);
         todos.add(tm);
         return tm;
-	}
+    }
+    // end::create[]
 
-	@Override
-	public Optional<TodoModel> findTodo(Integer id) {
+    // tag::read[]
+    @Override
+    public Optional<TodoModel> findTodo(Integer id) {
         return todos
             .stream()
             .filter(todo -> todo.hasId() && todo.getId() == id)
             .findFirst();
-	}
+    }
+    // end::read[]
 
-	@Override
-	public Optional<TodoModel> updateTodo(Integer id, TodoModel updated) {
+    // tag::update[]
+    @Override
+    public Optional<TodoModel> updateTodo(Integer id, TodoModel updated) {
         Optional<TodoModel> todo = findTodo(id);
 
         if (todo.isPresent()) {
@@ -66,10 +74,12 @@ public class SampleTodoManager implements TodoManager {
         }
 
         return todo;
-	}
+    }
+    // end::update[]
 
-	@Override
-	public Optional<TodoModel> deleteTodo(Integer id) {
+    // tag::delete[]
+    @Override
+    public Optional<TodoModel> deleteTodo(Integer id) {
         Optional<TodoModel> todo = findTodo(id);
 
         if (todo.isPresent()) {
@@ -77,5 +87,6 @@ public class SampleTodoManager implements TodoManager {
         }
 
         return todo;
-	}
+    }
+    // end::delete[]
 }
