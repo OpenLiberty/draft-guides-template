@@ -17,9 +17,9 @@ import java.util.Optional;
 import io.openliberty.guides.todolistSample.models.TodoModel;
 
 public interface TodoManager {
-    public List<TodoModel> getTodos();
-    public Optional<TodoModel> findTodo(Integer id);
-    public TodoModel createTodo(TodoModel todo);
-    public Optional<TodoModel> updateTodo(Integer id, TodoModel updated);
-    public Optional<TodoModel> deleteTodo(Integer id);
+    List<TodoModel> getTodos();
+    Optional<TodoModel> findTodo(Integer id);
+    TodoModel createTodo(TodoModel todo);
+    Optional<TodoModel> updateTodo(Integer id, TodoModel updated);
+    Optional<TodoModel> deleteTodo(Integer id);
 }
