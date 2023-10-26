@@ -34,7 +34,8 @@ public class TodoIT {
         HttpGet request = new HttpGet("http://localhost:9080/todo-app/todo");
         HttpResponse response = client.execute(request);
 
-        assertEquals(200, response.getStatusLine().getStatusCode(), "Incorrect response code from url");
+        assertEquals(200, response.getStatusLine().getStatusCode(),
+                     "Incorrect response code from url");
     }
 
     // tag::test2[]
@@ -46,6 +47,7 @@ public class TodoIT {
         HttpGet request = new HttpGet("http://localhost:9080/todo-app/todo" + "/4");
         HttpResponse response = client.execute(request);
 
-        assertEquals(200, response.getStatusLine().getStatusCode(), "Incorrect response code from url");
+        assertEquals(200, response.getStatusLine().getStatusCode(),
+                     "Incorrect response code from url");
     }
 }
