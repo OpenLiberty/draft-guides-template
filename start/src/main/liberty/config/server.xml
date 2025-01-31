@@ -1,9 +1,10 @@
 <server description="Intro REST Guide Liberty server">
 
   <featureManager>
-      <feature>jaxrs-2.0</feature>
-      <feature>jsonp-1.0</feature>
-      <feature>cdi-1.2</feature>
+      <platform>jakartaee-10.0</platform>
+      <feature>jaxrs</feature>
+      <feature>jsonp</feature>
+      <feature>cdi</feature>
   </featureManager>
 
   <variable name="default.http.port" defaultValue="9080"/>
